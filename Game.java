@@ -328,7 +328,7 @@ public class Game
         }
         wait(5000);
         for (int i = 0; i<= 50; i++) {
-            wait(50);
+            wait(20);
             System.out.println();
         }
     }

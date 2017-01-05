@@ -85,10 +85,10 @@ public class Room
     public String getFullDescription()
     {
         if (debugMode() == true) {
-            return "### DEBUG MESSAGE ###\nRoom name: " + getName() + "\n---------------------\nYou are " + getDescription() + "\n" + getExitDescription();
+            return "### DEBUG MESSAGE ###\nRoom name: " + getName() + "\n---------------------\n" + getDescription() + "\n" + getExitDescription();
         }
         else {
-            return "You are " + getDescription() + "\n" + getExitDescription();
+            return getDescription() + "\n" + getExitDescription();
         }
     }
 
