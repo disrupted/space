@@ -32,7 +32,7 @@ public class Parser
     }
 
     private String readLine(){
-        System.out.print("> ");     // print prompt
+        System.out.print("\n> ");     // print prompt
         return  reader.nextLine();
     }
 
@@ -41,7 +41,8 @@ public class Parser
      */
     public Command getCommand() 
     {
-        String inputLine = readLine(); 
+        String inputLine = readLine();
+        System.out.println();
         return getCommand(inputLine);
     }
     public Command getCommand(String inputLine){

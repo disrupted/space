@@ -19,6 +19,12 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
+    private boolean finished;
+    private Room start;
+    private Room ventilationshaft_0to1;
+    private Room corridor1_1;
+    private Room corridor1_2;
+    public boolean DEBUG = true;
 
     /**
      * Create the game and initialise its internal map.
@@ -34,33 +40,53 @@ public class Game
      */
     private void createRooms()
     {
-        Room outside, theatre, pub, lab, office, hole;
-
         // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theatre = new Room("in a lecture theatre");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office.\nthere is a golden magic coffee machine.");
-        hole = new Room("test");
-        
-        // initialise room exits
-//         outside.setExits(null, theatre, lab, pub);
-//         theatre.setExits(null, null, null, outside);
-//         pub.setExits(null, outside, null, null);
-//         lab.setExits(outside, office, null, null);
-//         office.setExits(null, null, null, lab);
-        outside.setExits("east", theatre);
-        outside.setExits("south", lab);
-        outside.setExits("west", pub);
-        theatre.setExits("west", outside);
-        pub.setExits("east", outside);
-        lab.setExits("north", outside);
-        lab.setExits("east", office);
-        office.setExits("west", lab);
-        outside.setExits("down", hole);
+        start = new Room("start","in the Welcome Room");
+        Room corridor01 = new Room("corridor01","in a lecture theatre");
+        Room corridor02 = new Room("corridor02","in the campus pub");
+        Room corridor03 = new Room("corridor03","in a computing lab");
+        //Room ventilationshaft_0to1 = new Room("ventilationshaft_0to1","\nthere is a golden magic coffee machine.");
+        //Room corridor1_1 = new Room("corridor1_1","in a generic hallway");
+        corridor1_2 = new Room("corridor1_2","in a generic hallway");
+        Room corridor1_3 = new Room("corridor1_3","in a generic hallway");
+        Room corridor1_4 = new Room("corridor1_4","in a generic hallway");
+        Room airlock = new Room("airlock","DANGER !");
+        Room elevator_lvl0 = new Room("elevator_lvl0","in the elevator at level 0.");
+        Room elevator_lvl1 = new Room("elevator_lvl1","in the elevator at level 1.");
+        Room elevator_lvl2 = new Room("elevator_lvl2","in the elevator at level 2.");
+        Room elevator_airlock = new Room("elevator_airlock","in the elevator at level -1.");
 
-        currentRoom = outside;  // start game outside
+        // initialise room exits
+        start.setExits("north", corridor01);
+        start.setExits("east", corridor03);
+        corridor01.setExits("east", corridor02);
+        corridor01.setExits("south", start);
+        corridor02.setExits("west", corridor01);
+        corridor02.setExits("south", corridor03);
+        corridor03.setExits("north", corridor02);
+        corridor03.setExits("west", start);
+        corridor1_2.setExits("east", corridor1_3);
+        corridor1_3.setExits("west", corridor1_2);
+        corridor1_3.setExits("east", corridor1_4);
+        corridor1_4.setExits("west", corridor1_3);
+        corridor1_4.setExits("east", elevator_lvl1);
+        elevator_lvl1.setExits("west", corridor1_4);
+        elevator_lvl1.setExits("2", elevator_lvl2);
+        elevator_lvl1.setExits("0", elevator_lvl0);
+        elevator_lvl1.setExits("-1", elevator_airlock);     
+        elevator_lvl2.setExits("1", elevator_lvl1);
+        elevator_lvl2.setExits("0", elevator_lvl0);
+        elevator_lvl2.setExits("-1", elevator_airlock);
+        elevator_lvl0.setExits("2", elevator_lvl2);
+        elevator_lvl0.setExits("1", elevator_lvl1);
+        elevator_lvl0.setExits("-1", elevator_airlock);
+        elevator_airlock.setExits("0", elevator_lvl0);
+        elevator_airlock.setExits("1", elevator_lvl1);
+        elevator_airlock.setExits("2", elevator_lvl2);
+        elevator_airlock.setExits("east", airlock);
+
+        //currentRoom = start;  // starting point
+        currentRoom = elevator_lvl0;
     }
 
     /**
@@ -73,8 +99,31 @@ public class Game
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
 
-        boolean finished = false;
+        finished = false;
+        boolean corridor01 = true;
+        boolean corridor02 = true;
+        boolean corridor03 = true;
+        boolean ventOpen = false;
         while (! finished) {
+            if (!ventOpen) {
+                if (currentRoom.getName() == "corridor01") { corridor01=true; }
+                if (currentRoom.getName() == "corridor02") { corridor02=true; }
+                if (currentRoom.getName() == "corridor03") { corridor03=true; }
+                if (corridor01 && corridor02 && corridor03) 
+                {
+                    Room ventilationshaft_0to1 = new Room("ventilationshaft_0to1","\nthere is a golden magic coffee machine.");
+                    Room corridor1_1 = new Room("corridor1_1","in a generic hallway");
+                    corridor1_1.setExits("east", corridor1_2);
+                    corridor1_2.setExits("west", corridor1_1);
+                    corridor1_1.setExits("west", ventilationshaft_0to1);
+                    ventilationshaft_0to1.setExits("down", start);
+                    ventilationshaft_0to1.setExits("east", corridor1_1);
+                    start.setExits("up", ventilationshaft_0to1);
+                    corridor01 = false;
+                    ventOpen = true;
+                    System.out.println("\nHave you noticed the broken ventilation shaft in the other room?");
+                }
+            }
             Command command = parser.getCommand();
             String output = processCommand(command);
             finished = (null == output);
@@ -87,18 +136,24 @@ public class Game
         System.out.println("Thank you for playing.  Good bye.");
     }
 
+    public void gameLogic()
+    {
+
+        while (! finished) {
+
+        }
+    }
+
     /**
      * Print out the opening message for the player.
      */
     private void printWelcome()
     {
-        System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
+        System.out.println("\nWelcome to the World of Zuul!");
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type 'help' if you need help.");
-        System.out.println();
-        System.out.println(currentRoom.getFullDescription());
-        System.out.println();
+        System.out.println("\n" + currentRoom.getFullDescription());
+        //System.out.println("________________1¶¶¶¶¶¶¶¶¶¶¶1________________\n _____________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶1____________\n __________¶¶¶¶118¶¶8¶¶¶¶¶¶¶¶¶¶¶¶¶¶___________\n _______8¶¶¶¶888¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶8________\n ______¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶______\n ____8¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶____\n ___¶¶¶¶¶¶¶¶¶¶¶8¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶8¶¶¶___\n __8¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶8¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶8¶¶¶¶__\n __¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶88881__¶¶¶¶¶¶¶__\n _¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶81___________¶¶¶¶¶¶__\n 1¶¶¶¶¶111____________________________8¶¶¶¶¶¶_\n ¶¶¶¶¶1___________________________1___1¶¶¶¶¶¶_\n ¶¶¶¶¶8111___________________________11¶¶¶¶¶¶_\n 1¶¶¶¶88111__________________________111¶¶¶¶¶_\n _¶¶¶¶1881________________________11111_¶¶¶¶¶_\n _¶¶¶¶18811_____________________¶¶¶¶¶¶8_1¶¶¶¶1\n _¶¶¶¶118¶¶¶¶81______________8¶¶¶¶¶¶¶¶¶_1¶¶¶8¶\n _8¶¶881¶¶¶¶¶¶¶¶¶1_________1¶¶¶¶811__1¶811¶¶1¶\n ¶¶¶¶118¶1__18¶¶¶¶¶8118818¶¶¶88¶111¶888¶11¶¶18\n ¶8¶¶11¶¶11¶¶111¶¶¶¶¶1___1¶¶¶¶1_1¶__¶¶8888¶¶8_\n _1¶¶11¶¶¶¶¶_8¶8_8¶8¶¶____8188__¶¶__¶1__18881_\n __8¶88111¶¶_8¶8__1__11___1___111_181___18811_\n __11881___181111____11_________________1881__\n __118¶81_____________8_________________1881__\n ___18¶¶1__________1111_____1_11______1_188___\n ___88¶¶8________88____________8¶81____188____\n ______1¶1_____8¶888_11____18¶¶118¶8888888____\n _______¶¶8881¶¶818¶¶¶¶¶8_1¶¶¶8118¶¶¶¶8888____\n _______¶¶¶¶¶¶¶¶881188¶¶¶¶¶¶818¶¶¶¶¶__1888____\n _______¶888¶18¶¶¶¶¶8888¶¶¶8¶¶¶¶8_11__88¶_____\n ______1¶¶8181_118¶¶¶¶¶¶¶¶¶¶¶¶8111___8¶¶______\n ¶¶¶¶¶¶¶¶¶¶88¶8_1_18¶¶¶¶¶¶¶8881_____1¶8_______\n 88888¶¶¶¶¶¶¶¶¶8_11118881111_______8¶¶________\n 88118¶__¶¶8¶8888_1_____________18¶¶_¶¶_______\n 88888¶___¶¶8818¶¶11_1_______11¶¶¶8__¶¶¶______\n ¶81¶¶¶____1¶¶¶88¶¶¶88888188¶¶¶¶81__¶¶¶¶¶_____\n 88¶¶¶8______¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶811__1¶¶¶¶¶¶1____\n 8¶¶8_________11_1¶¶¶¶¶¶¶888811__¶¶¶¶8¶¶¶¶1___\n ¶¶8_______¶¶¶¶¶_____11118881__1¶¶¶¶¶¶¶¶¶¶¶___\n ¶1_______¶¶¶¶¶¶______________¶¶¶¶¶¶¶¶¶8¶¶¶8__\n ¶_______¶¶¶¶¶¶¶____________1¶¶¶¶¶¶¶8¶¶¶88¶¶8_\n _______1¶¶¶¶8_____________¶¶¶¶¶8¶¶¶888888¶¶¶8\n _______¶¶¶¶_____________1¶¶¶¶¶88¶¶¶¶¶88¶¶¶88¶\n ______¶¶¶¶¶____________¶¶¶¶8888¶8¶88881¶8¶888\n _____¶¶¶¶¶8__________8¶¶88¶18818¶88118¶88888¶\n");
     }
 
     /**
@@ -204,6 +259,44 @@ public class Game
         //             return result;
         //         }
         //        result += "\n";
+        if (direction.contains("0")) {
+            System.out.println("the elevator is taking you to level 0..");
+            try {
+                Thread.sleep(2000);
+            } catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+            System.out.println("\n\n");
+        }
+        if (direction .contains("-1")) {
+            System.out.println("the elevator is taking you to level -1..\nyou should be careful with the airlock");
+            try {
+                Thread.sleep(2000);
+            } catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+            System.out.println("\n\n");
+        } else {
+            if (direction.contains("1")) {
+                System.out.println("the elevator is taking you to level 1..");
+                try {
+                    Thread.sleep(2000);
+                } catch(InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }
+                System.out.println("\n\n");
+            }
+        }
+        if (direction.contains("2")) {
+            System.out.println("the elevator is taking you to level 2..");
+            try {
+                Thread.sleep(2000);
+            } catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+            System.out.println("\n\n");
+        }
+
         String result = "";
         if (currentRoom == currentRoom.getNextRoom(direction)){
             result = "There is no door\n";
@@ -234,5 +327,4 @@ public class Game
         Game game = new Game();
         game.play();
     }
-
 }

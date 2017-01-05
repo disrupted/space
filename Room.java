@@ -16,6 +16,7 @@ import java.util.HashMap;
 
 public class Room 
 {
+    public String name;
     public String description;
     private Room northExit;
     private Room southExit;
@@ -29,9 +30,10 @@ public class Room
      * "an open court yard".
      * @param description The room's description.
      */
-    public Room(String description) 
+    public Room(String name, String description) 
     {
         this.description = description;
+        this.name = name;
         exits = new HashMap<>();
     }
 
@@ -82,25 +84,30 @@ public class Room
 
     public String getFullDescription()
     {
-        return "You are " + getDescription() + "\n" + getExitDescription() + "\n";
+        if (debugMode() == true) {
+            return "### DEBUG MESSAGE ###\nRoom name: " + getName() + "\n---------------------\nYou are " + getDescription() + "\n" + getExitDescription();
+        }
+        else {
+            return "You are " + getDescription() + "\n" + getExitDescription();
+        }
     }
 
     public Room getNextRoom(String direction)
     {
         Room nextRoom = null;
         Room currentRoom = this;
-//         if(direction.equals("north")) {
-//             nextRoom = exits.get("north");
-//         }
-//         if(direction.equals("east")) {
-//             nextRoom = exits.get("east");
-//         }
-//         if(direction.equals("south")) {
-//             nextRoom = exits.get("south");
-//         }
-//         if(direction.equals("west")) {
-//             nextRoom = exits.get("west");
-//         }
+        //         if(direction.equals("north")) {
+        //             nextRoom = exits.get("north");
+        //         }
+        //         if(direction.equals("east")) {
+        //             nextRoom = exits.get("east");
+        //         }
+        //         if(direction.equals("south")) {
+        //             nextRoom = exits.get("south");
+        //         }
+        //         if(direction.equals("west")) {
+        //             nextRoom = exits.get("west");
+        //         }
         nextRoom = exits.get(direction);
         if (nextRoom == null) {
             return currentRoom;
@@ -110,4 +117,14 @@ public class Room
             return nextRoom;
         }
     }
+
+    public String getName() 
+    {
+        return name;
+    }
+    
+    public boolean debugMode()
+    {
+        return true;
+    } 
 }
