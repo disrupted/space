@@ -45,8 +45,6 @@ public class Game
         Room corridor01 = new Room("corridor01","in a lecture theatre");
         Room corridor02 = new Room("corridor02","in the campus pub");
         Room corridor03 = new Room("corridor03","in a computing lab");
-        //Room ventilationshaft_0to1 = new Room("ventilationshaft_0to1","\nthere is a golden magic coffee machine.");
-        //Room corridor1_1 = new Room("corridor1_1","in a generic hallway");
         corridor1_2 = new Room("corridor1_2","in a generic hallway");
         Room corridor1_3 = new Room("corridor1_3","in a generic hallway");
         Room corridor1_4 = new Room("corridor1_4","in a generic hallway");
@@ -122,7 +120,7 @@ public class Game
                 if (currentRoom.getName() == "corridor03") { corridor03=true; }
                 if (corridor01 && corridor02 && corridor03) 
                 {
-                    Room ventilationshaft_0to1 = new Room("ventilationshaft_0to1","\nthere is a golden magic coffee machine.");
+                    Room ventilationshaft_0to1 = new Room("ventilationshaft_0to1","pretty dark in here..");
                     Room corridor1_1 = new Room("corridor1_1","in a generic hallway");
                     corridor1_1.setExits("east", corridor1_2);
                     corridor1_2.setExits("west", corridor1_1);
