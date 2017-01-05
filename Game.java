@@ -111,9 +111,9 @@ public class Game
         // execute them until the game is over.
 
         finished = false;
-        boolean corridor01 = true;
-        boolean corridor02 = true;
-        boolean corridor03 = true;
+        boolean corridor01 = false;
+        boolean corridor02 = false;
+        boolean corridor03 = false;
         boolean ventOpen = false;
         while (! finished) {
             if (!ventOpen) {
