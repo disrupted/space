@@ -259,7 +259,13 @@ public class Game
         }
         else {
             currentRoom = currentRoom.getNextRoom(direction);
-            return currentRoom.getFullDescription();
+            if (currentRoom.getName() == "airlock") { 
+                gameOver();
+                return null;
+            }
+            else {
+                return currentRoom.getFullDescription();
+            }
         }
     }
 
@@ -281,5 +287,39 @@ public class Game
     public static void main(String[] args){
         Game game = new Game();
         game.play();
+    }
+
+    public void wait(int ms)
+    {
+        try {
+            Thread.sleep(ms);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    public void gameOver()
+    {
+        for (int i = 0; i<= 40; i++) {
+            wait(50);
+            System.out.println();
+        }
+        System.out.println(" dP\"\"b8    db    8b    d8 888888      dP\"Yb  Yb    dP 888888 88\"\"Yb ");
+        wait(100);
+        System.out.println("dP   `\"   dPYb   88b  d88 88__       dP   Yb  Yb  dP  88__   88__dP ");
+        wait(100);
+        System.out.println("Yb  \"88  dP__Yb  88YbdP88 88\"\"       Yb   dP   YbdP   88\"\"   88\"Yb  ");
+        wait(100);
+        System.out.println(" YboodP dP\"\"\"\"Yb 88 YY 88 888888      YbodP     YP    888888 88  Yb ");
+        wait(100);
+        for (int i = 0; i<= 20; i++) {
+            wait(100);
+            System.out.println();
+        }
+        wait(5000);
+        for (int i = 0; i<= 50; i++) {
+            wait(50);
+            System.out.println();
+        }
     }
 }
