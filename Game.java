@@ -85,8 +85,7 @@ public class Game
         elevator_airlock.setExits("2", elevator_lvl2);
         elevator_airlock.setExits("east", airlock);
 
-        //currentRoom = start;  // starting point
-        currentRoom = elevator_lvl0;
+        currentRoom = start;  // starting point
     }
 
     /**
@@ -134,14 +133,6 @@ public class Game
 
         }
         System.out.println("Thank you for playing.  Good bye.");
-    }
-
-    public void gameLogic()
-    {
-
-        while (! finished) {
-
-        }
     }
 
     /**
@@ -223,42 +214,6 @@ public class Game
 
         String direction = command.getSecondWord();
 
-        // Try to leave current room.
-        //        Room nextRoom = null;
-        //         if(direction.equals("north")) {
-        //             nextRoom = currentRoom.northExit;
-        //         }
-        //         if(direction.equals("east")) {
-        //             nextRoom = currentRoom.eastExit;
-        //         }
-        //         if(direction.equals("south")) {
-        //             nextRoom = currentRoom.southExit;
-        //         }
-        //         if(direction.equals("west")) {
-        //             nextRoom = currentRoom.westExit;
-        //         }
-        //         String result = "";
-        //         if (nextRoom == null) {
-        //             result += "There is no door!";
-        //         }
-        //         else {
-        //             currentRoom = nextRoom;
-        //             result += "You are " + currentRoom.getDescription()+"\n";
-        //             if(currentRoom.northExit != null) {
-        //                 result += "north ";
-        //             }
-        //             if(currentRoom.eastExit != null) {
-        //                 result += "east ";
-        //             }
-        //             if(currentRoom.southExit != null) {
-        //                 result += "south ";
-        //             }
-        //             if(currentRoom.westExit != null) {
-        //                 result += "west ";
-        //             }
-        //             return result;
-        //         }
-        //        result += "\n";
         if (direction.contains("0")) {
             System.out.println("the elevator is taking you to level 0..");
             try {
