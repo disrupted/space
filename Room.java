@@ -147,20 +147,20 @@ public class Room
         itemMap.put(itemName, item);
     }
 
-    public String takeItem(String itemName)
+    public Item getItem(String itemName)
     {
         String result = "";
+        Item item = null;
         if (showItems().contains(itemName))
         {
-            itemMap.remove(itemName);
-            result = itemName + " was added to your inventory";
-            if (debugMode()) { result += "\n\n### DEBUG ###\nitems remaining in room:" + showItems(); }
+            item = itemMap.get(itemName);
         }
-        else
-        {
-            result = "there's no such item " + itemName;
-        }  
-        return result;
+        return item;
+    }
+    
+    public void removeItem(String itemName)
+    {
+        itemMap.remove(itemName);
     }
 
     public String showItems()

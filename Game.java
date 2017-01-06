@@ -14,6 +14,7 @@
  * @author  Michael Kolling and David J. Barnes
  * @version 2008.03.30
  */
+import java.util.HashMap;
 
 public class Game 
 {
@@ -28,6 +29,7 @@ public class Game
     public boolean DEBUG = true;
     private Item key;
     private Item map;
+    private HashMap<String,Item> inventory;
 
     /**
      * Create the game and initialise its internal map.
@@ -36,6 +38,7 @@ public class Game
     {
         createRooms();
         createItems();
+        inventory = new HashMap<>();
         placeItems();
         parser = new Parser();
     }
@@ -272,10 +275,21 @@ public class Game
             // if there is no second word, we don't know what to take...
             return "Take what?";
         }
-
+        String result = "";
         String itemName = command.getSecondWord();
-
-        return currentRoom.takeItem(itemName);
+        Item item = currentRoom.getItem(itemName);
+        if (item != null) 
+        {
+            currentRoom.removeItem(itemName);
+            inventory.put(itemName,item);
+            result = itemName + " was added to your inventory";
+            if (currentRoom.debugMode()) { result += "\n\n### DEBUG ###\nitems remaining in room:" + currentRoom.showItems(); }
+            else
+            {
+                result = "there's no such item " + itemName;
+            }  
+        }
+        return result;
     }
 
     private String look(Command command)
