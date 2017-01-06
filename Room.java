@@ -23,6 +23,7 @@ public class Room
     private Room eastExit;
     private Room westExit;
     private HashMap<String,Room> exits;
+    private HashMap<Room,Integer> visits;
 
     /**
      * Create a room described "description". Initially, it has
@@ -35,6 +36,8 @@ public class Room
         this.description = description;
         this.name = name;
         exits = new HashMap<>();
+        visits = new HashMap<>();
+        visits.put(this,0);
     }
 
     /**
@@ -61,6 +64,18 @@ public class Room
         exits.put(direction, room);
     }
 
+    public void addVisit()
+    {
+        int numberOfVisits = visits.get(this);
+        numberOfVisits++;
+        visits.put(this, numberOfVisits);
+    }
+
+    public int getVisits(Room room)
+    {
+        return visits.get(room);
+    }
+
     /**
      * @return The description of the room.
      */
@@ -85,7 +100,7 @@ public class Room
     public String getFullDescription()
     {
         if (debugMode() == true) {
-            return "### DEBUG MESSAGE ###\nRoom name: " + getName() + "\n---------------------\n" + getDescription() + "\n" + getExitDescription();
+            return "### DEBUG MESSAGE ###\nRoom name: " + getName() + "\nvisits: " + getVisits(this) + "\n---------------------\n" + getDescription() + "\n" + getExitDescription();
         }
         else {
             return getDescription() + "\n" + getExitDescription();
@@ -122,7 +137,7 @@ public class Room
     {
         return name;
     }
-    
+
     public boolean debugMode()
     {
         return true;

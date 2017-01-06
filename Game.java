@@ -21,6 +21,7 @@ public class Game
     private Room currentRoom;
     private boolean finished;
     private Room start;
+    private Room corridor01, corridor02, corridor03;
     private Room ventilationshaft_0to1;
     private Room corridor1_1;
     private Room corridor1_2;
@@ -42,9 +43,9 @@ public class Game
     {
         // create the rooms
         start = new Room("start","in the Welcome Room");
-        Room corridor01 = new Room("corridor01","in a lecture theatre");
-        Room corridor02 = new Room("corridor02","in the campus pub");
-        Room corridor03 = new Room("corridor03","in a computing lab");
+        corridor01 = new Room("corridor01","in a lecture theatre");
+        corridor02 = new Room("corridor02","in the campus pub");
+        corridor03 = new Room("corridor03","in a computing lab");
         corridor1_2 = new Room("corridor1_2","in a generic hallway");
         Room corridor1_3 = new Room("corridor1_3","in a generic hallway");
         Room corridor1_4 = new Room("corridor1_4","in a generic hallway");
@@ -53,7 +54,7 @@ public class Game
         Room corridor2_3 = new Room("corridor2_1","in a generic hallway");
         Room corridor2_4 = new Room("corridor2_1","in a generic hallway");
         Room airlock = new Room("airlock","DANGER !");
-        Room elevator_lvl0 = new Room("elevator_lvl0","in the elevator at level 0.");
+        Room elevator_lvl0 = new Room("elevator_lvl0","in the elevator at level 0.\nLevel 1 Security hatches are locked.");
         Room elevator_lvl1 = new Room("elevator_lvl1","in the elevator at level 1.");
         Room elevator_lvl2 = new Room("elevator_lvl2","in the elevator at level 2.");
         Room elevator_airlock = new Room("elevator_airlock","in the elevator at level -1.");
@@ -96,6 +97,7 @@ public class Game
         elevator_airlock.setExits("east", airlock);
 
         currentRoom = start;  // starting point
+        currentRoom.addVisit();
     }
 
     /**
@@ -109,16 +111,10 @@ public class Game
         // execute them until the game is over.
 
         finished = false;
-        boolean corridor01 = false;
-        boolean corridor02 = false;
-        boolean corridor03 = false;
         boolean ventOpen = false;
         while (! finished) {
             if (!ventOpen) {
-                if (currentRoom.getName() == "corridor01") { corridor01=true; }
-                if (currentRoom.getName() == "corridor02") { corridor02=true; }
-                if (currentRoom.getName() == "corridor03") { corridor03=true; }
-                if (corridor01 && corridor02 && corridor03) 
+                if ((corridor01.getVisits(corridor01) > 0) && (corridor02.getVisits(corridor02) > 0) && (corridor03.getVisits(corridor03) > 0)) 
                 {
                     Room ventilationshaft_0to1 = new Room("ventilationshaft_0to1","pretty dark in here..");
                     Room corridor1_1 = new Room("corridor1_1","in a generic hallway");
@@ -128,7 +124,6 @@ public class Game
                     ventilationshaft_0to1.setExits("down", start);
                     ventilationshaft_0to1.setExits("up", corridor1_1);
                     start.setExits("up", ventilationshaft_0to1);
-                    corridor01 = false;
                     ventOpen = true;
                     System.out.println("\nHave you noticed the broken ventilation shaft in the other room?");
                 }
@@ -274,6 +269,7 @@ public class Game
                 return null;
             }
             else {
+                currentRoom.addVisit();
                 return currentRoom.getFullDescription();
             }
         }
