@@ -10,7 +10,7 @@ public class Item
 {
     private String name;
     private String description;
-    public static HashMap<Item, Room> itemMap;
+    
 
     /**
      * Constructor for objects of class Item
@@ -19,7 +19,7 @@ public class Item
     {
         this.description = description;
         this.name = name;
-        itemMap = new HashMap<>();
+
     }
 
     /**
@@ -46,13 +46,5 @@ public class Item
         return output;
     }
     
-    public void placeItem(Room room)
-    {
-        itemMap.put(this, room);
-    }
-    
-    public void takeItem()
-    {
-        itemMap.remove(this);
-    }
+
 }

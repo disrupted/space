@@ -13,6 +13,7 @@
  * @version 2008.03.30
  */
 import java.util.HashMap;
+import java.util.Map;
 
 public class Room 
 {
@@ -20,6 +21,7 @@ public class Room
     public String description;
     public String transDescription;
     private HashMap<String,Room> exits;
+    public HashMap<String,Item> itemMap;
     private int visits;
 
     /**
@@ -34,6 +36,7 @@ public class Room
         this.name = name;
         exits = new HashMap<>();
         visits = 0;
+        itemMap = new HashMap<>();
     }
 
     /**
@@ -108,7 +111,7 @@ public class Room
             }
         }
     }
-    
+
     public String getFullDescription()
     {
         getTransDescription();
@@ -138,12 +141,34 @@ public class Room
     {
         return name;
     }
-    
+
+    public void placeItem(String itemName, Item item)
+    {
+        itemMap.put(itemName, item);
+    }
+
+    public String takeItem(String itemName)
+    {
+        String result = "";
+        if (showItems().contains(itemName))
+        {
+            itemMap.remove(itemName);
+            result = itemName + " was added to your inventory";
+            if (debugMode()) { result += "\n\n### DEBUG ###\nitems remaining in room:" + showItems(); }
+        }
+        else
+        {
+            result = "there's no such item " + itemName;
+        }  
+        return result;
+    }
+
     public String showItems()
     {
         String itemDescription = "";
-        for (Item item : Item.itemMap.keySet())
-        {
+        for(Map.Entry<String, Item> entry : itemMap.entrySet()) {
+            String name = entry.getKey();
+            Item item = entry.getValue();
             itemDescription += " " + item.getFullDescription();
         }
         return itemDescription;

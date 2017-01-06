@@ -112,8 +112,8 @@ public class Game
     
     private void placeItems()
     {
-        key.placeItem(start);
-        map.placeItem(start);
+        start.placeItem("key", key);
+        start.placeItem("map", map);
     }
     
     private void showItems()
@@ -256,6 +256,17 @@ public class Game
         }
     }
     
+        private String take(Command command)
+    {
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know what to take...
+            return "Take what?";
+        }
+
+        String itemName = command.getSecondWord();
+
+        return currentRoom.takeItem(itemName);
+    }
 
     /** 
      * "Quit" was entered. Check the rest of the command to see
