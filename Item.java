@@ -42,9 +42,7 @@ public class Item
     {
         String output = "";
         output += name;
-        output += " - " + description + "\n";
+        output += " - " + description;
         return output;
     }
-    
-
 }

@@ -169,7 +169,7 @@ public class Room
         for(Map.Entry<String, Item> entry : itemMap.entrySet()) {
             String name = entry.getKey();
             Item item = entry.getValue();
-            itemDescription += " " + item.getFullDescription();
+            itemDescription += "\n " + item.getFullDescription();
         }
         return itemDescription;
     }

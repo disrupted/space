@@ -15,6 +15,7 @@
  * @version 2008.03.30
  */
 import java.util.HashMap;
+import java.util.Map;
 
 public class Game 
 {
@@ -302,9 +303,14 @@ public class Game
     private String showInventory(Command command)
     {
         String inventoryList = "";
-        for (String item : inventory.keySet())
-        {
-            inventoryList += item + "\n";
+//         for (Item item : inventory.keySet())
+//         {
+//             inventoryList += "\n" + item;
+//         }
+        for(Map.Entry<String, Item> entry : inventory.entrySet()) {
+            String name = entry.getKey();
+            Item item = entry.getValue();
+            inventoryList += "\n " + item.getFullDescription();
         }
         if (inventoryList == "") { return "you haven't collected any items in your inventory"; }
         return "your inventory contains: " + inventoryList;
