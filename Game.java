@@ -103,19 +103,19 @@ public class Game
         currentRoom = start;  // starting point
         currentRoom.addVisit();
     }
-    
+
     private void createItems()
     {
         key = new Item("key", "you can unlock doors with it");
         map = new Item("map", "you can look at it");
     }
-    
+
     private void placeItems()
     {
         start.placeItem("key", key);
         start.placeItem("map", map);
     }
-    
+
     private void showItems()
     {
         currentRoom.showItems();
@@ -208,9 +208,10 @@ public class Game
             result = quit(command);
         else if (commandWord.equals(CommandWord.TAKE))
             result = take(command);
+        else if (commandWord.equals(CommandWord.LOOK))
+            result = look(command);
 
         return result;
-
     }
 
     // implementations of user commands:
@@ -255,8 +256,8 @@ public class Game
             }
         }
     }
-    
-        private String take(Command command)
+
+    private String take(Command command)
     {
         if(!command.hasSecondWord()) {
             // if there is no second word, we don't know what to take...
@@ -266,6 +267,11 @@ public class Game
         String itemName = command.getSecondWord();
 
         return currentRoom.takeItem(itemName);
+    }
+
+    private String look(Command command)
+    {
+        return currentRoom.getFullDescription();
     }
 
     /** 
