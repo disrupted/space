@@ -22,6 +22,7 @@ public class Game
     private Parser parser;
     private Room currentRoom;
     private boolean finished;
+    private boolean securityLvl1Unlocked;
     private Room start, commandcenter;
     private Room corridor01, corridor02, corridor03;
     private Room ventilationshaft_0to1;
@@ -218,6 +219,8 @@ public class Game
             result = look(command);
         else if (commandWord.equals(CommandWord.INVENTORY))
             result = showInventory(command);
+        else if (commandWord.equals(CommandWord.USE))
+            result = use(command);
 
         return result;
     }
@@ -248,7 +251,7 @@ public class Game
         String direction = command.getSecondWord();
 
         String result = "";
-        if (currentRoom.getNextRoom(direction).getName().equals("commandcenter")) {
+        if ((currentRoom.getNextRoom(direction).getName().equals("commandcenter")) && !securityLvl1Unlocked) {
             result += "This door seems to be locked";
             return result;
         }
@@ -310,6 +313,36 @@ public class Game
         }
         if (inventoryList == "") { return "you haven't collected any items in your inventory"; }
         return "your inventory contains: " + inventoryList;
+    }
+
+    private String use(Command command)
+    {
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know which item to use...
+            return "Use what?";
+        }
+        String result = "";
+        String itemName = command.getSecondWord();
+        boolean itemInInventory = false;
+        for(Map.Entry<String, Item> entry : inventory.entrySet()) {
+            String name = entry.getKey();
+            Item item = entry.getValue();
+            if (name.equals(itemName))
+            {
+                itemInInventory = true;
+                if ((name.equals("key") && (currentRoom.getName().equals("start"))))
+                {
+                    securityLvl1Unlocked = true;
+                    return "yes, that's it! this key unlocks the door here.";
+                }
+                else
+                {
+                    result += "I have no idea what to do with this, maybe I can use it somewhere else...";
+                }
+                return result;
+            }
+        }
+        return itemName + " wasn't found in your inventory"; 
     }
 
     /** 
