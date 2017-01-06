@@ -20,7 +20,7 @@ public class Game
     private Parser parser;
     private Room currentRoom;
     private boolean finished;
-    private Room start;
+    private Room start, commandcenter;
     private Room corridor01, corridor02, corridor03;
     private Room ventilationshaft_0to1;
     private Room corridor1_1;
@@ -47,6 +47,7 @@ public class Game
     {
         // create the rooms
         start = new Room("start","in the Welcome Room");
+        commandcenter = new Room ("commandcenter","in the Command Center");
         corridor01 = new Room("corridor01","in a lecture theatre");
         corridor02 = new Room("corridor02","in the campus pub");
         corridor03 = new Room("corridor03","in a computing lab");
@@ -66,6 +67,7 @@ public class Game
         // initialise room exits
         start.setExits("north", corridor01);
         start.setExits("east", corridor03);
+        start.setExits("south", commandcenter);
         corridor01.setExits("east", corridor02);
         corridor01.setExits("south", start);
         corridor02.setExits("west", corridor01);
@@ -240,19 +242,26 @@ public class Game
         String direction = command.getSecondWord();
 
         String result = "";
-        if (currentRoom == currentRoom.getNextRoom(direction)){
-            result = "There is no door\n";
+        if (currentRoom.getNextRoom(direction).getName().equals("commandcenter")) {
+            result += "This door seems to be locked";
             return result;
         }
-        else {
-            currentRoom = currentRoom.getNextRoom(direction);
-            if (currentRoom.getName() == "airlock") { 
-                gameOver();
-                return null;
+        else
+        {
+            if (currentRoom == currentRoom.getNextRoom(direction)){
+                result += "There is no door";
+                return result;
             }
             else {
-                currentRoom.addVisit();
-                return currentRoom.getFullDescription();
+                currentRoom = currentRoom.getNextRoom(direction);
+                if (currentRoom.getName() == "airlock") { 
+                    gameOver();
+                    return null;
+                }
+                else {
+                    currentRoom.addVisit();
+                    return currentRoom.getFullDescription();
+                }
             }
         }
     }
