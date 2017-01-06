@@ -10,7 +10,15 @@
  */
 
 public enum CommandWord {
-    GO("go"), QUIT("quit"), HELP("help"), UNKOWN("unknown");
+    GO("go"), 
+
+    QUIT("quit"), 
+
+    HELP("help"), 
+
+    TAKE("take"), 
+
+    UNKOWN("unknown");
     private String word;
 
     /**
@@ -22,8 +30,21 @@ public enum CommandWord {
 
     // a constant array that holds all valid command words
     private static final String[] validCommands = {
-            "go", "quit", "help", "unknown"
-    };
+            "go", "quit", "help", "take", "unknown"
+        };
+
+    public static String getCommandWords()
+    {
+        String output = "";
+        for (String command : validCommands)
+        {
+            if (command != "unknown")
+            {
+                output += command + " ";
+            }
+        }
+        return output;
+    }
 
     public String getWord() {
         return word;
@@ -35,11 +56,9 @@ public enum CommandWord {
             if (cw.getWord().equals(word))
                 return cw;
         }
-            return UNKOWN;
-
+        return UNKOWN;
 
     }
-
     /**
      * Check whether a given String is a valid command word.
      *

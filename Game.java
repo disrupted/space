@@ -197,12 +197,8 @@ public class Game
      * command words.
      */
     private String printHelp() 
-    {   String result = "";
-        result += "You are lost. You are alone. You wander\n";
-        result += "around at the university.\n";
-        result += "\n";
-        result += "Your command words are:\n";
-        result += "   go quit help\n";
+    {   
+        String result = "You are lost. You are alone. You wander\naround at the university.\n\nYour command words are:\n   " + CommandWord.getCommandWords();
         return result;
     }
 
