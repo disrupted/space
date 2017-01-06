@@ -221,39 +221,23 @@ public class Game
 
         if (direction.contains("0")) {
             System.out.println("the elevator is taking you to level 0..");
-            try {
-                Thread.sleep(2000);
-            } catch(InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
+            wait(2000);
             System.out.println("\n\n");
         }
         if (direction .contains("-1")) {
             System.out.println("the elevator is taking you to level -1..\nyou should be careful with the airlock");
-            try {
-                Thread.sleep(2000);
-            } catch(InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
+            wait(2000);
             System.out.println("\n\n");
         } else {
             if (direction.contains("1")) {
                 System.out.println("the elevator is taking you to level 1..");
-                try {
-                    Thread.sleep(2000);
-                } catch(InterruptedException ex) {
-                    Thread.currentThread().interrupt();
-                }
+                wait(2000);
                 System.out.println("\n\n");
             }
         }
         if (direction.contains("2")) {
             System.out.println("the elevator is taking you to level 2..");
-            try {
-                Thread.sleep(2000);
-            } catch(InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
+            wait(2000);
             System.out.println("\n\n");
         }
 
