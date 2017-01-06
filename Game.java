@@ -177,13 +177,13 @@ public class Game
             return "I don't know what you mean...";
         }
 
-        String commandWord = command.getCommandWord();
+        CommandWord commandWord = command.getCommandWord();
         String result = null;
-        if (commandWord.equals("help"))
+        if (commandWord.equals(CommandWord.HELP))
             result = printHelp();
-        else if (commandWord.equals("go"))
+        else if (commandWord.equals(CommandWord.GO))
             result = goRoom(command);
-        else if (commandWord.equals("quit"))
+        else if (commandWord.equals(CommandWord.QUIT))
             result = quit(command);
 
         return result;

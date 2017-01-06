@@ -19,7 +19,7 @@
 
 public class Command
 {
-    private String commandWord;
+    private CommandWord commandWord;
     private String secondWord;
 
     /**
@@ -31,7 +31,7 @@ public class Command
      */
     public Command(String firstWord, String secondWord)
     {
-        commandWord = firstWord;
+        commandWord = CommandWord.getForWord(firstWord);
         this.secondWord = secondWord;
     }
 
@@ -40,7 +40,7 @@ public class Command
      * command was not understood, the result is null.
      * @return The command word.
      */
-    public String getCommandWord()
+    public CommandWord getCommandWord()
     {
         return commandWord;
     }
