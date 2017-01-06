@@ -26,6 +26,8 @@ public class Game
     private Room corridor1_1;
     private Room corridor1_2;
     public boolean DEBUG = true;
+    private Item key;
+    private Item map;
 
     /**
      * Create the game and initialise its internal map.
@@ -33,6 +35,8 @@ public class Game
     public Game() 
     {
         createRooms();
+        createItems();
+        placeItems();
         parser = new Parser();
     }
 
@@ -98,6 +102,23 @@ public class Game
 
         currentRoom = start;  // starting point
         currentRoom.addVisit();
+    }
+    
+    private void createItems()
+    {
+        key = new Item("key", "you can unlock doors with it");
+        map = new Item("map", "you can look at it");
+    }
+    
+    private void placeItems()
+    {
+        key.placeItem(start);
+        map.placeItem(start);
+    }
+    
+    private void showItems()
+    {
+        currentRoom.showItems();
     }
 
     /**
@@ -185,6 +206,8 @@ public class Game
             result = goRoom(command);
         else if (commandWord.equals(CommandWord.QUIT))
             result = quit(command);
+        else if (commandWord.equals(CommandWord.TAKE))
+            result = take(command);
 
         return result;
 
@@ -232,6 +255,7 @@ public class Game
             }
         }
     }
+    
 
     /** 
      * "Quit" was entered. Check the rest of the command to see

@@ -59,6 +59,7 @@ public enum CommandWord {
         return UNKOWN;
 
     }
+
     /**
      * Check whether a given String is a valid command word.
      *

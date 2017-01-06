@@ -113,7 +113,7 @@ public class Room
     {
         getTransDescription();
         if (debugMode() == true) {
-            return "### DEBUG MESSAGE ###\nRoom name: " + getName() + "\nvisits: " + getVisits() + "\n---------------------\n" + getDescription() + "\n" + getExitDescription();
+            return "### DEBUG MESSAGE ###\nRoom name: " + getName() + "\nvisits: " + getVisits() + "\nitems:\n" + showItems() + "\n---------------------\n" + getDescription() + "\n" + getExitDescription();
         }
         else {
             return getDescription() + "\n" + getExitDescription();
@@ -137,6 +137,16 @@ public class Room
     public String getName() 
     {
         return name;
+    }
+    
+    public String showItems()
+    {
+        String itemDescription = "";
+        for (Item item : Item.itemMap.keySet())
+        {
+            itemDescription += " " + item.getFullDescription();
+        }
+        return itemDescription;
     }
 
     public boolean debugMode()
