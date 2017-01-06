@@ -24,7 +24,7 @@ public enum CommandWord {
 
     HELP("help"), 
 
-    UNKOWN("unknown");
+    UNKNOWN("unknown");
     private String word;
 
     /**
@@ -62,7 +62,7 @@ public enum CommandWord {
             if (cw.getWord().equals(word))
                 return cw;
         }
-        return UNKOWN;
+        return UNKNOWN;
 
     }
 

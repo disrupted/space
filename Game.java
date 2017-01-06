@@ -204,10 +204,6 @@ public class Game
     {
         boolean wantToQuit = false;
 
-        if(command.isUnknown()) {
-            return "I don't know what you mean...";
-        }
-
         CommandWord commandWord = command.getCommandWord();
         String result = null;
         if (commandWord.equals(CommandWord.HELP))
@@ -224,6 +220,8 @@ public class Game
             result = showInventory(command);
         else if (commandWord.equals(CommandWord.USE))
             result = use(command);
+        else if (commandWord.equals(CommandWord.UNKNOWN))
+            result = "I don't know what you mean...";
 
         return result;
     }
