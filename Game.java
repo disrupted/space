@@ -287,11 +287,11 @@ public class Game
             inventory.put(itemName,item);
             result = itemName + " was added to your inventory";
             if (currentRoom.debugMode()) { result += "\n\n### DEBUG ###\nitems remaining in room:" + currentRoom.showItems(); }
-            else
-            {
-                result = "there's no such item " + itemName;
-            }  
         }
+        else
+        {
+            result = "there's no such item " + itemName;
+        }  
         return result;
     }
 
@@ -303,10 +303,6 @@ public class Game
     private String showInventory(Command command)
     {
         String inventoryList = "";
-//         for (Item item : inventory.keySet())
-//         {
-//             inventoryList += "\n" + item;
-//         }
         for(Map.Entry<String, Item> entry : inventory.entrySet()) {
             String name = entry.getKey();
             Item item = entry.getValue();
