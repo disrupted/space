@@ -157,6 +157,10 @@ public class Game
                     System.out.println("\nHave you noticed the broken ventilation shaft in the other room?");
                 }
             }
+            if (currentRoom.getName().contains("corridor0") && (corridor01.getVisits() > 1) == (corridor02.getVisits() > 1) == (corridor03.getVisits() > 1))
+            {
+                System.out.println("\nthink I might be going in circles...");
+            }
             Command command = parser.getCommand();
             String output = processCommand(command);
             finished = (null == output);
@@ -164,7 +168,6 @@ public class Game
             { 
                 System.out.println(output);
             }
-
         }
         System.out.println("Thank you for playing.  Good bye.");
     }
