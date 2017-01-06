@@ -116,7 +116,7 @@ public class Room
     {
         getTransDescription();
         if (debugMode() == true) {
-            return "### DEBUG MESSAGE ###\nRoom name: " + getName() + "\nvisits: " + getVisits() + "\nitems:\n" + showItems() + "\n---------------------\n" + getDescription() + "\n" + getExitDescription();
+            return "### DEBUG MESSAGE ###\nRoom name: " + getName() + "\nvisits: " + getVisits() + "\nitems: " + showItems() + "\n---------------------\n" + getDescription() + "\n" + getExitDescription();
         }
         else {
             return getDescription() + "\n" + getExitDescription();
