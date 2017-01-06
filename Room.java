@@ -23,7 +23,7 @@ public class Room
     private Room eastExit;
     private Room westExit;
     private HashMap<String,Room> exits;
-    private HashMap<Room,Integer> visits;
+    private int visits;
 
     /**
      * Create a room described "description". Initially, it has
@@ -36,8 +36,7 @@ public class Room
         this.description = description;
         this.name = name;
         exits = new HashMap<>();
-        visits = new HashMap<>();
-        visits.put(this,0);
+        visits = 0;
     }
 
     /**
@@ -48,17 +47,6 @@ public class Room
      * @param south The south exit.
      * @param west The west exit.
      */
-    //     public void setExits(Room north, Room east, Room south, Room west) 
-    //     {
-    //         if(north != null)
-    //             northExit = north;
-    //         if(east != null)
-    //             eastExit = east;
-    //         if(south != null)
-    //             southExit = south;
-    //         if(west != null)
-    //             westExit = west;
-    //     }
     public void setExits(String direction, Room room)
     {
         exits.put(direction, room);
@@ -66,14 +54,12 @@ public class Room
 
     public void addVisit()
     {
-        int numberOfVisits = visits.get(this);
-        numberOfVisits++;
-        visits.put(this, numberOfVisits);
+        visits++;
     }
 
-    public int getVisits(Room room)
+    public int getVisits()
     {
-        return visits.get(room);
+        return visits;
     }
 
     /**
@@ -100,7 +86,7 @@ public class Room
     public String getFullDescription()
     {
         if (debugMode() == true) {
-            return "### DEBUG MESSAGE ###\nRoom name: " + getName() + "\nvisits: " + getVisits(this) + "\n---------------------\n" + getDescription() + "\n" + getExitDescription();
+            return "### DEBUG MESSAGE ###\nRoom name: " + getName() + "\nvisits: " + getVisits() + "\n---------------------\n" + getDescription() + "\n" + getExitDescription();
         }
         else {
             return getDescription() + "\n" + getExitDescription();
@@ -111,18 +97,6 @@ public class Room
     {
         Room nextRoom = null;
         Room currentRoom = this;
-        //         if(direction.equals("north")) {
-        //             nextRoom = exits.get("north");
-        //         }
-        //         if(direction.equals("east")) {
-        //             nextRoom = exits.get("east");
-        //         }
-        //         if(direction.equals("south")) {
-        //             nextRoom = exits.get("south");
-        //         }
-        //         if(direction.equals("west")) {
-        //             nextRoom = exits.get("west");
-        //         }
         nextRoom = exits.get(direction);
         if (nextRoom == null) {
             return currentRoom;

@@ -114,7 +114,7 @@ public class Game
         boolean ventOpen = false;
         while (! finished) {
             if (!ventOpen) {
-                if ((corridor01.getVisits(corridor01) > 0) && (corridor02.getVisits(corridor02) > 0) && (corridor03.getVisits(corridor03) > 0)) 
+                if ((corridor01.getVisits() > 0) && (corridor02.getVisits() > 0) && (corridor03.getVisits() > 0)) 
                 {
                     Room ventilationshaft_0to1 = new Room("ventilationshaft_0to1","pretty dark in here..");
                     Room corridor1_1 = new Room("corridor1_1","in a generic hallway");
