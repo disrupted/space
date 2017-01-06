@@ -215,6 +215,8 @@ public class Game
             result = take(command);
         else if (commandWord.equals(CommandWord.LOOK))
             result = look(command);
+        else if (commandWord.equals(CommandWord.INVENTORY))
+            result = showInventory(command);
 
         return result;
     }
@@ -295,6 +297,17 @@ public class Game
     private String look(Command command)
     {
         return currentRoom.getFullDescription();
+    }
+
+    private String showInventory(Command command)
+    {
+        String inventoryList = "";
+        for (String item : inventory.keySet())
+        {
+            inventoryList += item + "\n";
+        }
+        if (inventoryList == "") { return "you haven't collected any items in your inventory"; }
+        return "your inventory contains: " + inventoryList;
     }
 
     /** 
