@@ -16,7 +16,7 @@ public enum CommandWord {
 
     HELP("help"), 
 
-    TAKE("take"), 
+    TAKE("take"),
 
     UNKOWN("unknown");
     private String word;
@@ -30,7 +30,7 @@ public enum CommandWord {
 
     // a constant array that holds all valid command words
     private static final String[] validCommands = {
-            "go", "quit", "help", "take", "unknown"
+            "go", "take", "quit", "help", "unknown"
         };
 
     public static String getCommandWords()
