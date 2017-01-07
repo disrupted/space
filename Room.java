@@ -115,7 +115,7 @@ public class Room
     public String getFullDescription()
     {
         getTransDescription();
-        if (debugMode() == true) {
+        if (Game.debugMode()) {
             return "### DEBUG MESSAGE ###\nRoom name: " + getName() + "\nvisits: " + getVisits() + "\nitems: " + showItems() + "\n---------------------\n" + getDescription() + "\n" + getExitDescription();
         }
         else {
@@ -173,9 +173,4 @@ public class Room
         }
         return itemDescription;
     }
-
-    public boolean debugMode()
-    {
-        return true;
-    } 
 }

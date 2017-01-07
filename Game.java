@@ -28,7 +28,7 @@ public class Game
     private Room ventilationshaft_0to1;
     private Room corridor1_1;
     private Room corridor1_2;
-    public boolean DEBUG = true;
+    private static boolean DEBUG = true;
     private Item key, map, picture;
     private HashMap<String,Item> inventory;
 
@@ -290,7 +290,7 @@ public class Game
             result = itemName + " was added to your inventory - " + item.getDescription();
             currentRoom.removeItem(itemName);
             inventory.put(itemName,item);
-            if (currentRoom.debugMode()) { result += "\n\n### DEBUG ###\nitems remaining in room:" + currentRoom.showItems(); }
+            if (debugMode()) { result += "\n\n### DEBUG ###\nitems remaining in room:" + currentRoom.showItems(); }
         }
         else
         {
@@ -399,4 +399,9 @@ public class Game
             System.out.println();
         }
     }
+
+    public static boolean debugMode()
+    {
+        return DEBUG;
+    } 
 }
