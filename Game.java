@@ -290,7 +290,7 @@ public class Game
             result = itemName + " was added to your inventory - " + item.getDescription();
             currentRoom.removeItem(itemName);
             inventory.put(itemName,item);
-            if (debugMode()) { result += "\n\n### DEBUG ###\nitems remaining in room:" + currentRoom.showItems(); }
+            if (debugMode()) { result += "\n\n### DEBUG MESSAGE ###\nitems remaining in room:" + currentRoom.showItems() + "\n---------------------"; }
         }
         else
         {
