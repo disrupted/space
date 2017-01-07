@@ -56,6 +56,9 @@ public class GameSystemTest
         assertTrue("message contains command word go", output.contains("go"));
         assertTrue("message contains command word quit", output.contains("quit"));
         assertTrue("message contains command word help", output.contains("help"));
+        assertTrue("message contains command word help", output.contains("take"));
+        assertTrue("message contains command word help", output.contains("look"));
+        assertTrue("message contains command word help", output.contains("use"));
     }
 
     @Test
@@ -66,6 +69,7 @@ public class GameSystemTest
         // then an error message should be returned
         assertTrue("should output error message", output.contains("I don't know what you mean"));
     }
+
     @Test
     public void testGoSouth()
     {
@@ -73,8 +77,7 @@ public class GameSystemTest
         //when
         String output = game.processCommand("go south");
         //then
-        assertTrue("should be in computing lab"+output,
-            output.contains("computing lab"));
+        assertTrue("door should be locked", output.contains("locked"));
     }
 
     @Test
@@ -83,6 +86,16 @@ public class GameSystemTest
         //given: new game
         //when
         String output = game.processCommand("go north");
+        //then
+        assertEquals(true, output.contains("lecture theatre"));
+    }
+
+    @Test
+    public void testGoWest()
+    {
+        //given: new game
+        //when
+        String output = game.processCommand("go west");
         //then
         assertEquals(true, output.contains("no door"));
     }
@@ -110,28 +123,26 @@ public class GameSystemTest
     }
 
     @Test
-    public void testCoffee()
-    {
-        //given: game with currentRoom: computer Lab
-        game.processCommand("go south");
+    public void testInventory()
+    {   
         //when
-        String output = game.processCommand("go east");
+        String output = game.processCommand("inventory");
         //then
-        assertEquals(true, output.contains("coffee machine"));
+        assertEquals(true, output.contains("you haven't collected any items in your inventory"));
     }
 
-    @Test
-    public void completeWalkthrough()
-    {
-        goAndSee("east",  "lecture theatre");
-        goAndSee("west",  "main entrance");
-        goAndSee("west",  "campus pub");
-        goAndSee("east",  "main entrance");
-        goAndSee("south", "computing lab");
-        goAndSee("east",  "admin office");
-        goAndSee("west",  "computing lab");
-        goAndSee("north", "main entrance");
-    }
+//     @Test
+//     public void completeWalkthrough()
+//     {
+//         goAndSee("east",  "lecture theatre");
+//         goAndSee("west",  "main entrance");
+//         goAndSee("west",  "campus pub");
+//         goAndSee("east",  "main entrance");
+//         goAndSee("south", "computing lab");
+//         goAndSee("east",  "admin office");
+//         goAndSee("west",  "computing lab");
+//         goAndSee("north", "main entrance");
+//     }
 
     private void goAndSee(String direction, String whatShouldBeContained){
         //when
@@ -143,19 +154,10 @@ public class GameSystemTest
 
     @Test
     public void showExits(){
-        game.processCommand("go south");
-        String result = game.processCommand("go north");
-        assertTrue(result.contains("east"));
+        game.processCommand("go north");
+        String result = game.processCommand("go south");
+        assertTrue(result.contains("north"));
         assertTrue(result.contains("south"));
-        assertTrue(result.contains("west"));
-    }
-
-    @Test
-    public void showCommands(){
-        game.processCommand("go south");
-        String result = game.processCommand("go north");
         assertTrue(result.contains("east"));
-        assertTrue(result.contains("south"));
-        assertTrue(result.contains("west"));
     }
 }
