@@ -178,4 +178,18 @@ public class Room
     {
         return securityLvl;
     }
+    
+    public Integer getSecurityLvlExits()
+    {
+        int maxSecurityLvl = 0;
+        for (String direction : exits.keySet())
+        {
+            int nextRoomSecurityLvl = getNextRoom(direction).getSecurityLvl();
+            if (nextRoomSecurityLvl > maxSecurityLvl)
+            {
+                maxSecurityLvl = nextRoomSecurityLvl;
+            }
+        }
+        return maxSecurityLvl;
+    }
 }
