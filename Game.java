@@ -63,10 +63,10 @@ public class Game
         Room corridor2_3 = new Room("corridor2_1","in a generic hallway");
         Room corridor2_4 = new Room("corridor2_1","in a generic hallway");
         Room airlock = new Room("airlock","DANGER !");
-        Room elevator_lvl0 = new Room("elevator_lvl0","in the elevator at level 0.\nLevel 1 Security hatches are locked.");
-        Room elevator_lvl1 = new Room("elevator_lvl1","in the elevator at level 1.");
-        Room elevator_lvl2 = new Room("elevator_lvl2","in the elevator at level 2.");
-        Room elevator_airlock = new Room("elevator_airlock","in the elevator at level -1.");
+        Room elevator_lvl0 = new Room("elevator_lvl0","Elevator: Deck 0 – Central Area\nLevel 1 Security hatches are locked.");
+        Room elevator_lvl1 = new Room("elevator_lvl1","Elevator: Deck 1 – Engineer's Quarters");
+        Room elevator_lvl2 = new Room("elevator_lvl2","Elevator: Deck 2 – Administration");
+        Room elevator_airlock = new Room("elevator_airlock","Elevator: Deck -1 – Cargo Bay");
 
         // initialise room exits
         start.setExits("north", corridor01);
