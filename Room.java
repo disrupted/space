@@ -17,9 +17,8 @@ import java.util.Map;
 
 public class Room 
 {
-    public String name;
-    public String description;
-    public String transDescription;
+    public String name, description, transDescription;
+    public int securityLvl;
     private HashMap<String,Room> exits;
     public HashMap<String,Item> itemMap;
     private int visits;
@@ -30,10 +29,11 @@ public class Room
      * "an open court yard".
      * @param description The room's description.
      */
-    public Room(String name, String description) 
+    public Room(String name, String description, Integer securityLvl) 
     {
         this.description = description;
         this.name = name;
+        this.securityLvl = securityLvl;
         exits = new HashMap<>();
         visits = 0;
         itemMap = new HashMap<>();
@@ -172,5 +172,10 @@ public class Room
             itemDescription += "\n " + item.getFullDescription();
         }
         return itemDescription;
+    }
+    
+    public Integer getSecurityLvl()
+    {
+        return securityLvl;
     }
 }

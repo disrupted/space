@@ -31,6 +31,7 @@ public class Game
     private static boolean DEBUG = true;
     private Item key, map, picture;
     private HashMap<String,Item> inventory;
+    private int securityLvl = 0;
 
     /**
      * Create the game and initialise its internal map.
@@ -50,23 +51,23 @@ public class Game
     private void createRooms()
     {
         // create the rooms
-        start = new Room("start","in the Welcome Room");
-        commandcenter = new Room ("commandcenter","in the Command Center");
-        corridor01 = new Room("corridor01","in a lecture theatre");
-        corridor02 = new Room("corridor02","in the campus pub");
-        corridor03 = new Room("corridor03","in a computing lab");
-        corridor1_2 = new Room("corridor1_2","in a generic hallway");
-        Room corridor1_3 = new Room("corridor1_3","in a generic hallway");
-        Room corridor1_4 = new Room("corridor1_4","in a generic hallway");
-        Room corridor2_1 = new Room("corridor2_1","in a generic hallway");
-        Room corridor2_2 = new Room("corridor2_1","in a generic hallway");
-        Room corridor2_3 = new Room("corridor2_1","in a generic hallway");
-        Room corridor2_4 = new Room("corridor2_1","in a generic hallway");
-        Room airlock = new Room("airlock","DANGER !");
-        Room elevator_lvl0 = new Room("elevator_lvl0","Elevator: Deck 0 – Central Area\nLevel 1 Security hatches are locked.");
-        Room elevator_lvl1 = new Room("elevator_lvl1","Elevator: Deck 1 – Engineer's Quarters");
-        Room elevator_lvl2 = new Room("elevator_lvl2","Elevator: Deck 2 – Administration");
-        Room elevator_airlock = new Room("elevator_airlock","Elevator: Deck -1 – Cargo Bay");
+        start = new Room("start","in the Welcome Room", 0);
+        commandcenter = new Room ("commandcenter","in the Command Center", 1);
+        corridor01 = new Room("corridor01","in a lecture theatre", 0);
+        corridor02 = new Room("corridor02","in the campus pub", 0);
+        corridor03 = new Room("corridor03","in a computing lab", 0);
+        corridor1_2 = new Room("corridor1_2","in a generic hallway", 0);
+        Room corridor1_3 = new Room("corridor1_3","in a generic hallway", 0);
+        Room corridor1_4 = new Room("corridor1_4","in a generic hallway", 0);
+        Room corridor2_1 = new Room("corridor2_1","in a generic hallway", 0);
+        Room corridor2_2 = new Room("corridor2_1","in a generic hallway", 0);
+        Room corridor2_3 = new Room("corridor2_1","in a generic hallway", 0);
+        Room corridor2_4 = new Room("corridor2_1","in a generic hallway", 0);
+        Room airlock = new Room("airlock","DANGER !", 0);
+        Room elevator_lvl0 = new Room("elevator_lvl0","Elevator: Deck 0 – Central Area\nLevel 1 Security hatches are locked.", 0);
+        Room elevator_lvl1 = new Room("elevator_lvl1","Elevator: Deck 1 – Engineer's Quarters", 0);
+        Room elevator_lvl2 = new Room("elevator_lvl2","Elevator: Deck 2 – Administration", 0);
+        Room elevator_airlock = new Room("elevator_airlock","Elevator: Deck -1 – Cargo Bay", 0);
 
         // initialise room exits
         start.setExits("north", corridor01);
@@ -145,8 +146,8 @@ public class Game
             if (!ventOpen) {
                 if ((corridor01.getVisits() > 0) && (corridor02.getVisits() > 0) && (corridor03.getVisits() > 0)) 
                 {
-                    Room ventilationshaft_0to1 = new Room("ventilationshaft_0to1","pretty dark in here..");
-                    Room corridor1_1 = new Room("corridor1_1","in a generic hallway");
+                    Room ventilationshaft_0to1 = new Room("ventilationshaft_0to1","pretty dark in here..", 0);
+                    Room corridor1_1 = new Room("corridor1_1","in a generic hallway", 0);
                     corridor1_1.setExits("east", corridor1_2);
                     corridor1_2.setExits("west", corridor1_1);
                     corridor1_1.setExits("down", ventilationshaft_0to1);
@@ -252,7 +253,7 @@ public class Game
         String direction = command.getSecondWord();
 
         String result = "";
-        if ((currentRoom.getNextRoom(direction).getName().equals("commandcenter")) && !securityLvl1Unlocked) {
+        if (currentRoom.getNextRoom(direction).getSecurityLvl() > securityLvl) {
             result += "This door seems to be locked";
             return result;
         }
@@ -333,7 +334,7 @@ public class Game
                 itemInInventory = true;
                 if ((name.equals("key") && (currentRoom.getName().equals("start"))))
                 {
-                    securityLvl1Unlocked = true;
+                    securityLvl = 1;
                     return "yes, that's it! this key unlocks the door here.";
                 }
                 else
