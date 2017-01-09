@@ -126,11 +126,6 @@ public class Game
         corridor2_4.placeItem("keycardLvl2", keycardLvl2);
     }
 
-    private void showItems()
-    {
-        currentRoom.showItems();
-    }
-
     /**
      *  Main play routine.  Loops until end of play.
      */
@@ -410,5 +405,10 @@ public class Game
     public static boolean debugMode()
     {
         return DEBUG;
+    }
+    
+    public static void setDebugMode(boolean debugMode)
+    {
+        DEBUG = debugMode;
     }
 }
