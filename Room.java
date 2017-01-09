@@ -88,7 +88,7 @@ public class Room
             if (Game.debugMode())
                 exitDescription += "(" + nextRoomSecurityLvl + ")\n       ";      
         }
-        if (Game.debugMode()) { exitDescription = exitDescription.substring(0, exitDescription.length() - 8); }
+        if (Game.debugMode() && exitDescription.length() > 8) { exitDescription = exitDescription.substring(0, exitDescription.length() - 8); }
         return exitDescription;
     }
 
