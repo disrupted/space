@@ -52,7 +52,7 @@ public class Game
     {
         // create the rooms
         start = new Room("start","in the Welcome Room", 0);
-        commandcenter = new Room ("commandcenter","in the Command Center", 1);
+        commandcenter = new Room ("commandcenter","in the Command Center", 2);
         corridor01 = new Room("corridor01","in a lecture theatre", 0);
         corridor02 = new Room("corridor02","in the campus pub", 0);
         corridor03 = new Room("corridor03","in a computing lab", 0);
@@ -61,7 +61,7 @@ public class Game
         Room corridor1_4 = new Room("corridor1_4","in a generic hallway", 0);
         Room corridor2_1 = new Room("corridor2_1","in a generic hallway", 0);
         Room corridor2_2 = new Room("corridor2_1","in a generic hallway", 0);
-        Room corridor2_3 = new Room("corridor2_1","in a generic hallway", 0);
+        Room corridor2_3 = new Room("corridor2_1","in a generic hallway", 1);
         Room corridor2_4 = new Room("corridor2_1","in a generic hallway", 0);
         Room airlock = new Room("airlock","DANGER !", 0);
         Room elevator_lvl0 = new Room("elevator_lvl0","Elevator: Deck 0 – Central Area\nLevel 1 Security hatches are locked.", 0);

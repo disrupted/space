@@ -1,17 +1,15 @@
-
 /**
  * Write a description of class Item here.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Salomon Popp
+ * @version 2016.01.08
  */
 import java.util.HashMap;
+
 public class Item
 {
-    private String name;
-    private String description;
+    private String name, description;
     
-
     /**
      * Constructor for objects of class Item
      */

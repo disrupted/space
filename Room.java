@@ -17,10 +17,10 @@ import java.util.Map;
 
 public class Room 
 {
-    public String name, description, transDescription;
-    public int securityLvl;
+    private String name, description, transDescription;
+    private int securityLvl;
     private HashMap<String,Room> exits;
-    public HashMap<String,Item> itemMap;
+    private HashMap<String,Item> itemMap;
     private int visits;
 
     /**
