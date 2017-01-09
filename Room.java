@@ -51,7 +51,7 @@ public class Room
     {
         exits.put(direction, room);
     }
-    
+
     public void setSecurityLvl(int newSecurityLvl)
     {
         securityLvl = newSecurityLvl;
@@ -120,25 +120,29 @@ public class Room
             }
         }
     }
-    
+
     public String getItemDescription()
     {
-        String itemDescription = "";
         String items = showItems();
-        if (!(items == null))
-            itemDescription = "Oh look, there's an item in this room: " + items;
-        return itemDescription;
+        if (items != null)
+            return "Oh look, I found an item in this room: " + items;
+        else
+            return null;
     }
 
     public String getFullDescription()
     {
         getTransDescription();
+        String result = "";
         if (Game.debugMode()) {
-            return "### DEBUG MESSAGE ###\nRoom name: " + getName() + "\nvisits: " + getVisits() + "\nitems: " + showItems() + "\n---------------------\n" + getDescription() + "\n" + getExitDescription();
+            result = "### DEBUG MESSAGE ###\nRoom name: " + getName() + "\nvisits: " + getVisits() + "\nitems: " + showItems() + "\n---------------------\n" + getDescription() + "\n" + getExitDescription();
         }
         else {
-            return getDescription() + "\n" + getExitDescription() + "\n\n" + getItemDescription();
+            result = getDescription() + "\n" + getExitDescription();
+            if (getItemDescription() != null)
+                result += "\n\n" + getItemDescription();
         }
+        return result;
     }
 
     public Room getNextRoom(String direction)
@@ -189,7 +193,11 @@ public class Room
             Item item = entry.getValue();
             itemDescription += "\n " + item.getFullDescription();
         }
-        return itemDescription;
+        if (itemDescription != "") {
+            return itemDescription;
+        } else {
+            return null;
+        }
     }
 
     public Integer getSecurityLvl()
@@ -210,7 +218,7 @@ public class Room
         }
         return maxSecurityLvl;
     }
-    
+
     public String getExitMatchingSecurityLvl(int securityLvl)
     {
         // finds the nextRoom with matching securityLvl and returns its direction
