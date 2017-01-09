@@ -49,6 +49,7 @@ public enum CommandWord {
                 output += command + " ";
             }
         }
+        output = output.substring(0, output.length() - 1);
         return output;
     }
 
@@ -63,7 +64,6 @@ public enum CommandWord {
                 return cw;
         }
         return UNKNOWN;
-
     }
 
     /**
