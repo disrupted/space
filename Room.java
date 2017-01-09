@@ -115,6 +115,15 @@ public class Room
             }
         }
     }
+    
+    public String getItemDescription()
+    {
+        String itemDescription = "";
+        String items = showItems();
+        if (!(items == null))
+            itemDescription = "Oh look, there's an item in this room: " + items;
+        return itemDescription;
+    }
 
     public String getFullDescription()
     {
@@ -123,7 +132,7 @@ public class Room
             return "### DEBUG MESSAGE ###\nRoom name: " + getName() + "\nvisits: " + getVisits() + "\nitems: " + showItems() + "\n---------------------\n" + getDescription() + "\n" + getExitDescription();
         }
         else {
-            return getDescription() + "\n" + getExitDescription();
+            return getDescription() + "\n" + getExitDescription() + "\n\n" + getItemDescription();
         }
     }
 
