@@ -79,11 +79,11 @@ public class Room
         for (String direction : exits.keySet())
         {
             int nextRoomSecurityLvl = getNextRoom(direction).getSecurityLvl();
-            exitDescription += direction;
+            exitDescription += direction + " ";
             if (Game.debugMode())
-                exitDescription += " (" + nextRoomSecurityLvl + ")\n       ";      
+                exitDescription += "(" + nextRoomSecurityLvl + ")\n       ";      
         }
-        if (Game.debugMode()) { exitDescription = exitDescription.substring(0, exitDescription.length() - 9); }
+        if (Game.debugMode()) { exitDescription = exitDescription.substring(0, exitDescription.length() - 8); }
         return exitDescription;
     }
 
