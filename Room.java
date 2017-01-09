@@ -51,6 +51,11 @@ public class Room
     {
         exits.put(direction, room);
     }
+    
+    public void setSecurityLvl(int newSecurityLvl)
+    {
+        securityLvl = newSecurityLvl;
+    }
 
     public void addVisit()
     {
@@ -192,9 +197,8 @@ public class Room
         return securityLvl;
     }
 
-    public Integer getSecurityLvlExits()
+    public Integer getMaxSecurityLvlOfExits()
     {
-        // todo: find matching door for keycard
         int maxSecurityLvl = 0;
         for (String direction : exits.keySet())
         {
@@ -205,5 +209,18 @@ public class Room
             }
         }
         return maxSecurityLvl;
+    }
+    
+    public String getExitMatchingSecurityLvl(int securityLvl)
+    {
+        // finds the nextRoom with matching securityLvl and returns its direction
+        for (String direction : exits.keySet())
+        {
+            if (getNextRoom(direction).getSecurityLvl() == securityLvl)
+            {
+                return direction;
+            }
+        }
+        return null;
     }
 }

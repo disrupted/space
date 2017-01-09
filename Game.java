@@ -252,7 +252,7 @@ public class Game
         String direction = command.getSecondWord();
 
         String result = "";
-        if (currentRoom.getNextRoom(direction).getSecurityLvl() > securityLvl) {
+        if (currentRoom.getNextRoom(direction).getSecurityLvl() > 0) {
             result += "This exit seems to be locked by a security level " + currentRoom.getNextRoom(direction).getSecurityLvl() + " hatch";
             return result;
         }
@@ -330,11 +330,17 @@ public class Game
             Item item = entry.getValue();
             if (name.equals(itemName))
             {
-                if (name.equals("keycardLvl" + currentRoom.getSecurityLvlExits()))
+                if (name.contains("keycardLvl"))
                 {
-                    if (securityLvl < currentRoom.getSecurityLvlExits())
-                        securityLvl = currentRoom.getSecurityLvlExits();
-                    return "yes, that's it! this keycard unlocks the security hatch here.";
+                    int securityLvl = Integer.parseInt(name.replace("keycardLvl", ""));
+                    String direction = currentRoom.getExitMatchingSecurityLvl(securityLvl);
+                    if (direction != null) {
+                        currentRoom.getNextRoom(direction).setSecurityLvl(0);
+                        return "yes, that's it! this keycard unlocks the security hatch here.";
+                    }
+                    else {
+                        result += "there's no security level " + securityLvl + " hatch here.";
+                    }
                 }
                 else
                 {
