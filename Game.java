@@ -53,6 +53,8 @@ public class Game
         corridor01 = new Room("corridor01","in a lecture theatre", 0);
         corridor02 = new Room("corridor02","in the campus pub", 0);
         corridor03 = new Room("corridor03","in a computing lab", 0);
+        ventilationshaft_0to1 = new Room("ventilationshaft_0to1","pretty dark in here..", 0);
+        corridor1_1 = new Room("corridor1_1","in a generic hallway", 0);
         corridor1_2 = new Room("corridor1_2","in a generic hallway", 0);
         corridor1_3 = new Room("corridor1_3","in a generic hallway", 0);
         corridor1_4 = new Room("corridor1_4","in a generic hallway", 0);
@@ -143,9 +145,7 @@ public class Game
         while (! finished) {
             if (!ventOpen) {
                 if ((corridor01.getVisits() > 0) && (corridor02.getVisits() > 0) && (corridor03.getVisits() > 0)) 
-                {
-                    ventilationshaft_0to1 = new Room("ventilationshaft_0to1","pretty dark in here..", 0);
-                    corridor1_1 = new Room("corridor1_1","in a generic hallway", 0);
+                {                    
                     corridor1_1.setExits("east", corridor1_2);
                     corridor1_2.setExits("west", corridor1_1);
                     corridor1_1.setExits("down", ventilationshaft_0to1);
