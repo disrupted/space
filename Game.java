@@ -334,7 +334,8 @@ public class Game
             {
                 if (name.equals("keycardLvl" + currentRoom.getSecurityLvlExits()))
                 {
-                    securityLvl = 1;
+                    if (securityLvl < currentRoom.getSecurityLvlExits())
+                        securityLvl = currentRoom.getSecurityLvlExits();
                     return "yes, that's it! this keycard unlocks the security hatch here.";
                 }
                 else
