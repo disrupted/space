@@ -22,7 +22,6 @@ public class Game
     private Parser parser;
     private Room currentRoom;
     private boolean finished;
-    private boolean securityLvl1Unlocked;
     private Room start, commandcenter;
     private Room corridor01, corridor02, corridor03, corridor1_1, corridor1_2, corridor1_3, corridor1_4, corridor2_1, corridor2_2, corridor2_3, corridor2_4, airlock, elevator_airlock, elevator_lvl0, elevator_lvl1, elevator_lvl2, ventilationshaft_0to1;
     private static boolean DEBUG = true;
@@ -402,5 +401,5 @@ public class Game
     public static boolean debugMode()
     {
         return DEBUG;
-    } 
+    }
 }

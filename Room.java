@@ -75,11 +75,15 @@ public class Room
      */
     public String getExitDescription()
     {
-        String exitDescription = "Exits:";
+        String exitDescription = "Exits: ";
         for (String direction : exits.keySet())
         {
-            exitDescription += " " + direction;
+            int nextRoomSecurityLvl = getNextRoom(direction).getSecurityLvl();
+            exitDescription += direction;
+            if (Game.debugMode())
+                exitDescription += " (" + nextRoomSecurityLvl + ")\n       ";      
         }
+        if (Game.debugMode()) { exitDescription = exitDescription.substring(0, exitDescription.length() - 9); }
         return exitDescription;
     }
 
@@ -157,7 +161,7 @@ public class Room
         }
         return item;
     }
-    
+
     public void removeItem(String itemName)
     {
         itemMap.remove(itemName);
@@ -173,14 +177,15 @@ public class Room
         }
         return itemDescription;
     }
-    
+
     public Integer getSecurityLvl()
     {
         return securityLvl;
     }
-    
+
     public Integer getSecurityLvlExits()
     {
+        // todo: find matching door for keycard
         int maxSecurityLvl = 0;
         for (String direction : exits.keySet())
         {
