@@ -92,31 +92,32 @@ public class Room
         return exitDescription;
     }
 
-    public void getTransDescription()
+    public void getTransDescription(String direction)
     {
-        String name = getName();
-        if (name.contains("elevator"))
+        String currentRoomName = getName();
+        String nextRoomName = getNextRoom(direction).getName();
+        if (currentRoomName.contains("elevator") && nextRoomName.contains("elevator"))
         {
             //transition message
-            if (name == "elevator_lvl0") {
+            if (nextRoomName == "elevator_lvl0") {
                 System.out.println("the elevator is taking you to level 0..");
                 Game.wait(2000);
-                System.out.println("\n\n");
+                System.out.println("\n");
             }
-            if (name == "elevator_airlock") {
+            if (nextRoomName == "elevator_airlock") {
                 System.out.println("the elevator is taking you to level -1..\nyou should be careful with the airlock");
                 Game.wait(2000);
-                System.out.println("\n\n");
+                System.out.println("\n");
             }
-            if (name == "elevator_lvl1") {
+            if (nextRoomName == "elevator_lvl1") {
                 System.out.println("the elevator is taking you to level 1..");
                 Game.wait(2000);
-                System.out.println("\n\n");
+                System.out.println("\n");
             }
-            if (name == "elevator_lvl2") {
+            if (nextRoomName == "elevator_lvl2") {
                 System.out.println("the elevator is taking you to level 2..");
                 Game.wait(2000);
-                System.out.println("\n\n");
+                System.out.println("\n");
             }
         }
     }
@@ -132,7 +133,6 @@ public class Room
 
     public String getFullDescription()
     {
-        getTransDescription();
         String result = "";
         if (Game.debugMode()) {
             result = "### DEBUG MESSAGE ###\nRoom name: " + getName() + "\nvisits: " + getVisits() + "\nitems: " + showItems() + "\n---------------------\n" + getDescription() + "\n" + getExitDescription();

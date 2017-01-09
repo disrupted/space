@@ -263,6 +263,7 @@ public class Game
                 return result;
             }
             else {
+                currentRoom.getTransDescription(direction);
                 currentRoom = currentRoom.getNextRoom(direction);
                 if (currentRoom.getName() == "airlock") { 
                     gameOver();
