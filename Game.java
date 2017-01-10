@@ -318,6 +318,20 @@ public class Game
         return "your inventory contains: " + inventoryList;
     }
 
+    private String dropItems(Command command)
+    {
+        String result = "";
+        for(Map.Entry<String, Item> entry : inventory.entrySet()) {
+            String name = entry.getKey();
+            Item item = entry.getValue();
+            inventory.remove(name);
+            currentRoom.placeItem("name", item);
+            result += name + ", ";
+        }
+        if (result == "") { return "you haven't collected any items in your inventory"; }
+        return "inventory dropped: " + result.substring(0, result.length() - 2);
+    }
+
     private String use(Command command)
     {
         if(!command.hasSecondWord()) {
