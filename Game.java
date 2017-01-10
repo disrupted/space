@@ -324,10 +324,10 @@ public class Game
         for(Map.Entry<String, Item> entry : inventory.entrySet()) {
             String name = entry.getKey();
             Item item = entry.getValue();
-            inventory.remove(name);
             currentRoom.placeItem("name", item);
             result += name + ", ";
         }
+        inventory.clear();
         if (result == "") { return "you haven't collected any items in your inventory"; }
         return "inventory dropped: " + result.substring(0, result.length() - 2);
     }
