@@ -154,6 +154,7 @@ public class Game
                     start.setExits("up", ventilationshaft_0to1);
                     ventOpen = true;
                     System.out.println("\nHave you noticed the broken ventilation shaft in the other room?");
+                    Game.wait(1500);
                 }
             }
             if (currentRoom.getName().contains("corridor0") && (corridor01.getVisits() > 1) == (corridor02.getVisits() > 1) == (corridor03.getVisits() > 1))
@@ -424,8 +425,8 @@ public class Game
             wait(100);
             System.out.println();
         }
-        wait(5000);
-        for (int i = 0; i<= 50; i++) {
+        wait(3000);
+        for (int i = 0; i<= 40; i++) {
             wait(20);
             System.out.println();
         }
