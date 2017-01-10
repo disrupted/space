@@ -8,16 +8,16 @@ import java.util.HashMap;
 
 public class Item
 {
-    private String name, description;
+    private String name, description, event;
     
     /**
      * Constructor for objects of class Item
      */
-    public Item(String name, String description)
+    public Item(String name, String description, String event)
     {
         this.description = description;
         this.name = name;
-
+        this.event = event;
     }
 
     /**
@@ -34,6 +34,11 @@ public class Item
     public String getDescription()
     {
         return description;
+    }
+    
+    public String getEvent()
+    {
+        return event;
     }
     
     public String getFullDescription()

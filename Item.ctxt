@@ -1,6 +1,6 @@
 #BlueJ class context
-comment0.params=name\ description
-comment0.target=Item(java.lang.String,\ java.lang.String)
+comment0.params=name\ description\ event
+comment0.target=Item(java.lang.String,\ java.lang.String,\ java.lang.String)
 comment0.text=\n\ Constructor\ for\ objects\ of\ class\ Item\n
 comment1.params=
 comment1.target=java.lang.String\ getName()
@@ -8,5 +8,7 @@ comment1.text=\n\ An\ example\ of\ a\ method\ -\ replace\ this\ comment\ with\ y
 comment2.params=
 comment2.target=java.lang.String\ getDescription()
 comment3.params=
-comment3.target=java.lang.String\ getFullDescription()
-numComments=4
+comment3.target=java.lang.String\ getEvent()
+comment4.params=
+comment4.target=java.lang.String\ getFullDescription()
+numComments=5
