@@ -215,6 +215,8 @@ public class Game
             result = showInventory(command);
         else if (commandWord.equals(CommandWord.USE))
             result = use(command);
+        else if (commandWord.equals(CommandWord.DROPITEMS))
+            result = dropItems(command);
         else if (commandWord.equals(CommandWord.UNKNOWN))
             result = "I don't know what you mean...";
         else
