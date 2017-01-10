@@ -283,10 +283,14 @@ public class Game
         Item item = currentRoom.getItem(itemName);
         if (item != null) 
         {
-            result = itemName + " was added to your inventory - " + item.getDescription();
-            currentRoom.removeItem(itemName);
-            inventory.put(itemName,item);
-            if (debugMode()) { result += "\n\n### DEBUG MESSAGE ###\nitems remaining in room:" + currentRoom.showItems() + "\n---------------------"; }
+            if (inventory.size() < 1) {
+                result = itemName + " was added to your inventory - " + item.getDescription();
+                currentRoom.removeItem(itemName);
+                inventory.put(itemName,item);
+                if (debugMode()) { result += "\n\n### DEBUG MESSAGE ###\nsize of inventory: " + inventory.size() + "\nitems remaining in room: " + currentRoom.showItems() + "\n---------------------"; }
+            } else {
+                result += "I'll need some sort of bag to carry more than 1 item";
+            }
         }
         else
         {
