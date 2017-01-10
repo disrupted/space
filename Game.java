@@ -217,6 +217,8 @@ public class Game
             result = use(command);
         else if (commandWord.equals(CommandWord.UNKNOWN))
             result = "I don't know what you mean...";
+        else
+            result = "ERROR ñ behaviour for " + commandWord + " is missing";
 
         return result;
     }
