@@ -173,7 +173,7 @@ public class Room
     {
         String result = "";
         Item item = null;
-        if (showItems().contains(itemName))
+        if (showItems() != null && showItems().contains(itemName))
         {
             item = itemMap.get(itemName);
         }
