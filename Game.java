@@ -204,29 +204,19 @@ public class Game
         boolean wantToQuit = false;
 
         CommandWord commandWord = command.getCommandWord();
-        String result = null;
-        if (commandWord.equals(CommandWord.HELP))
-            result = printHelp();
-        else if (commandWord.equals(CommandWord.GO))
-            result = goRoom(command);
-        else if (commandWord.equals(CommandWord.QUIT))
-            result = quit(command);
-        else if (commandWord.equals(CommandWord.TAKE))
-            result = take(command);
-        else if (commandWord.equals(CommandWord.LOOK))
-            result = look(command);
-        else if (commandWord.equals(CommandWord.INVENTORY))
-            result = showInventory(command);
-        else if (commandWord.equals(CommandWord.USE))
-            result = use(command);
-        else if (commandWord.equals(CommandWord.DROPITEMS))
-            result = dropItems(command);
-        else if (commandWord.equals(CommandWord.UNKNOWN))
-            result = "I don't know what you mean...";
-        else
-            result = "ERROR: behaviour for " + commandWord + " is missing";
+        switch(commandWord) {
+            case HELP: return printHelp();
+            case GO: return goRoom(command);
+            case QUIT: return quit(command);
+            case TAKE: return take(command);
+            case LOOK: return look(command);
+            case INVENTORY: return showInventory(command);
+            case USE: return use(command);
+            case DROPITEMS: return dropItems(command);
+            case UNKNOWN: return "I don't know what you mean. Please use these words...\n" + printHelp();
+        }
 
-        return result;
+        return null;
     }
 
     // implementations of user commands:
