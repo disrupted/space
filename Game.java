@@ -23,8 +23,8 @@ public class Game
     private Room currentRoom;
     private boolean finished;
     private Room start, commandcenter;
-    private static boolean DEBUG = true;
     private Room corridor0_1, corridor0_2, corridor0_3, corridor1_1, corridor1_2, corridor1_3, corridor1_4, corridor2_1, corridor2_2, corridor2_3, corridor2_4, airlock, elevator_airlock, elevator_lvl0, elevator_lvl1, elevator_lvl2, ventilationshaft_0to1;
+    private static boolean DEBUG = false;
     private Item keycardLvl1, keycardLvl2, coin, picture, backpack;
     private HashMap<String,Item> inventory;
     private int inventoryLimit = 1;
@@ -176,9 +176,9 @@ public class Game
      */
     private void printWelcome()
     {
-        System.out.println("\nWelcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
-        System.out.println("Type 'help' if you need help.");
+        System.out.println("\nWelcome to <Game title>!");
+        System.out.println("Hey you, I am so glad that I found this communicator here to talk to someone.\nI really hope you can help me out because I just woke up in this strange room\nand I have no idea what's going on here but this environment looks kinda spacey.");
+        System.out.println("\nCan you give me some tips what to do by using these commands? \n " + printHelp());
         System.out.println("\n" + currentRoom.getFullDescription());
     }
 
