@@ -50,21 +50,21 @@ public class Game
     {
         // create the rooms
         start = new Room("start","Cryosleep Room", 0);
-        commandcenter = new Room ("commandcenter","in the Command Center", 2);
-        corridor0_1 = new Room("corridor0_1","lavatory", 0);
-        corridor0_2 = new Room("corridor0_2","medical facilities", 0);
-        corridor0_3 = new Room("corridor0_3", "lunchroom", 0);
-        ventilationshaft_0to1 = new Room("ventilationshaft_0to1","pretty dark in here..", 0);
+        commandcenter = new Room ("commandcenter","Command Center", 2);
+        corridor0_1 = new Room("corridor0_1","Lavatory", 0);
+        corridor0_2 = new Room("corridor0_2","Medical Facilities", 0);
+        corridor0_3 = new Room("corridor0_3", "Lunchroom", 0);
+        ventilationshaft_0to1 = new Room("ventilationshaft_0to1","pretty dark inside this vent..", 0);
         corridor1_1 = new Room("corridor1_1","Hallway", 0);
         corridor1_2 = new Room("corridor1_2","Computer Core", 0);
-        corridor1_3 = new Room("corridor1_3","Terminal I", 0);
+        corridor1_3 = new Room("corridor1_3","Console I", 0);
         corridor1_4 = new Room("corridor1_4","Engine Room", 1);
         corridor2_1 = new Room("corridor2_1","Great Hall", 0);
-        corridor2_2 = new Room("corridor2_2","Terminal II", 0);
+        corridor2_2 = new Room("corridor2_2","Console II", 0);
         corridor2_3 = new Room("corridor2_3","Situation Room", 1);
         corridor2_4 = new Room("corridor2_4","Cockpit", 0);
         airlock = new Room("airlock","DANGER !", 0);
-        elevator_lvl0 = new Room("elevator_lvl0","Elevator: Deck 0 – Central Area\nLevel 1 Security hatches are locked.", 0);
+        elevator_lvl0 = new Room("elevator_lvl0","Elevator: Deck 0 – Central Area", 0);
         elevator_lvl1 = new Room("elevator_lvl1","Elevator: Deck 1 – Engineer's Quarters", 0);
         elevator_lvl2 = new Room("elevator_lvl2","Elevator: Deck 2 – Administration", 0);
         elevator_airlock = new Room("elevator_airlock","Elevator: Deck -1 – Cargo Bay", 0);
@@ -211,7 +211,7 @@ public class Game
         boolean wantToQuit = false;
 
         CommandWord commandWord = command.getCommandWord();
-        switch(commandWord) {
+        switch (commandWord) {
             case HELP: return "use these command words:\n   " + printHelp();
             case GO: return goRoom(command);
             case QUIT: return quit(command);
@@ -457,7 +457,7 @@ public class Game
     {
         return DEBUG;
     }
-    
+
     public static void setDebugMode(boolean debugMode)
     {
         DEBUG = debugMode;
