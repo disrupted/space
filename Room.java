@@ -101,22 +101,22 @@ public class Room
             //transition message
             if (nextRoomName == "elevator_lvl0") {
                 System.out.println("the elevator is taking you to level 0..");
-                Game.wait(2000);
+                if (!Game.debugMode()) { Game.wait(2000); }
                 System.out.println("\n");
             }
             if (nextRoomName == "elevator_airlock") {
                 System.out.println("the elevator is taking you to level -1..\nyou should be careful with the airlock");
-                Game.wait(2000);
+                if (!Game.debugMode()) { Game.wait(2000); }
                 System.out.println("\n");
             }
             if (nextRoomName == "elevator_lvl1") {
                 System.out.println("the elevator is taking you to level 1..");
-                Game.wait(2000);
+                if (!Game.debugMode()) { Game.wait(2000); }
                 System.out.println("\n");
             }
             if (nextRoomName == "elevator_lvl2") {
                 System.out.println("the elevator is taking you to level 2..");
-                Game.wait(2000);
+                if (!Game.debugMode()) { Game.wait(2000); }
                 System.out.println("\n");
             }
         }
