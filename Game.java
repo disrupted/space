@@ -205,7 +205,7 @@ public class Game
 
         CommandWord commandWord = command.getCommandWord();
         switch(commandWord) {
-            case HELP: return printHelp();
+            case HELP: return "use these command words:\n   " + printHelp();
             case GO: return goRoom(command);
             case QUIT: return quit(command);
             case TAKE: return take(command);
@@ -213,7 +213,7 @@ public class Game
             case INVENTORY: return showInventory(command);
             case USE: return use(command);
             case DROPITEMS: return dropItems(command);
-            case UNKNOWN: return "I don't know what you mean. Please use these words...\n" + printHelp();
+            case UNKNOWN: return "I don't know what you mean.\nuse these command words to give me advice..\n   " + printHelp();
         }
 
         return null;
@@ -227,8 +227,7 @@ public class Game
      */
     private String printHelp() 
     {   
-        String result = "You are lost. You are alone. You wander\naround at the university.\n\nYour command words are:\n   " + CommandWord.getCommandWords();
-        return result;
+        return CommandWord.getCommandWords();
     }
 
     /** 
