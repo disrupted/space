@@ -212,7 +212,7 @@ public class Game
             case LOOK: return look(command);
             case INVENTORY: return showInventory(command);
             case USE: return use(command);
-            case DROPITEMS: return dropItems(command);
+            case DROP: return drop(command);
             case UNKNOWN: return "I don't know what you mean.\nuse these command words to give me advice..\n   " + printHelp();
         }
 
@@ -315,19 +315,45 @@ public class Game
         return "your inventory contains " + inventory.size() + "/" + inventoryLimit + " items :" + inventoryList;
     }
 
-    private String dropItems(Command command)
+    private String drop(Command command)
     {
-        String result = "";
-        for(Map.Entry<String, Item> entry : inventory.entrySet()) {
-            String name = entry.getKey();
-            Item item = entry.getValue();
-            currentRoom.placeItem(name, item);
-            result += name + ", ";
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know which item to drop...
+            return "Drop what?";
         }
-        inventory.clear();
-        inventoryLimit = 1;
-        if (result == "") { return "you haven't collected any items in your inventory"; }
-        return "inventory dropped: " + result.substring(0, result.length() - 2);
+        String result = "";
+        String itemName = command.getSecondWord();
+        if (itemName.equals("all"))
+        {
+            for(Map.Entry<String, Item> entry : inventory.entrySet()) {
+                String name = entry.getKey();
+                Item item = entry.getValue();
+                currentRoom.placeItem(name, item);
+                result += name + ", ";
+            }
+            inventory.clear();
+            inventoryLimit = 1;
+            if (result == "") { return "I haven't collected any items in the inventory"; }
+            return "inventory dropped: " + result.substring(0, result.length() - 2);
+        }
+        else
+        {
+            for(Map.Entry<String, Item> entry : inventory.entrySet()) {
+                String name = entry.getKey();
+                if (name.equals(itemName)) {
+                    Item item = entry.getValue();
+                    inventory.remove(itemName);
+                    currentRoom.placeItem(itemName, item);
+                    result = itemName + " was removed from inventory";
+                    if (itemName.equals("backpack")) { inventoryLimit = 1; };
+                    if (debugMode()) { result += "\n\n### DEBUG MESSAGE ###\ninventory size: " + inventory.size() + " / " + inventoryLimit + "\nitems remaining in room: " + currentRoom.showItems() + "\n---------------------"; }
+                }       
+            }
+            if (result == "") {
+                result = "inventory doesn't contain " + itemName; 
+            }
+            return result;
+        }
     }
 
     private String use(Command command)

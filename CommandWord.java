@@ -20,7 +20,7 @@ public enum CommandWord {
     
     INVENTORY("inventory"),
     
-    DROPITEMS("dropItems"),
+    DROP("drop"),
 
     QUIT("quit"), 
 
@@ -38,7 +38,7 @@ public enum CommandWord {
 
     // a constant array that holds all valid command words
     private static final String[] validCommands = {
-            "go", "look", "use", "take", "inventory", "dropItems", "teleport", "quit", "help", "unknown"
+            "go", "look", "use", "take", "inventory", "drop", "quit", "help", "unknown"
         };
 
     public static String getCommandWords()
