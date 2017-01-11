@@ -29,6 +29,7 @@ public class Game
     private HashMap<String,Item> inventory;
     private int inventoryLimit = 1;
     private int securityLvl = 0;
+    private boolean ventOpen = false;
 
     /**
      * Create the game and initialise its internal map.
@@ -140,20 +141,11 @@ public class Game
         // execute them until the game is over.
 
         finished = false;
-        boolean ventOpen = false;
         while (! finished) {
             if (!ventOpen) {
                 if ((corridor0_1.getVisits() > 0) && (corridor0_2.getVisits() > 0) && (corridor0_3.getVisits() > 0)) 
                 {                    
-                    corridor1_1.setExits("east", corridor1_2);
-                    corridor1_2.setExits("west", corridor1_1);
-                    corridor1_1.setExits("down", ventilationshaft_0to1);
-                    ventilationshaft_0to1.setExits("down", start);
-                    ventilationshaft_0to1.setExits("up", corridor1_1);
-                    start.setExits("up", ventilationshaft_0to1);
-                    ventOpen = true;
-                    System.out.println("\nI haven't noticed this ventilation shaft at the top before.\nJust wondering where it's leading...  I could perhaps try to find an entrance\nand climb inside because it looks out of function anyways.");
-                    Game.wait(1500);
+                    triggerEvent("vent");
                 }
             }
             if (currentRoom.getName().contains("corridor0") && (corridor0_1.getVisits() > 1) == (corridor0_2.getVisits() > 1) == (corridor0_3.getVisits() > 1))
@@ -169,6 +161,21 @@ public class Game
             }
         }
         System.out.println("Thank you for playing.  Good bye.");
+    }
+
+    public void triggerEvent(String event)
+    {
+        if (event == "all" || event == "vent") {
+            corridor1_1.setExits("east", corridor1_2);
+            corridor1_2.setExits("west", corridor1_1);
+            corridor1_1.setExits("down", ventilationshaft_0to1);
+            ventilationshaft_0to1.setExits("down", start);
+            ventilationshaft_0to1.setExits("up", corridor1_1);
+            start.setExits("up", ventilationshaft_0to1);
+            ventOpen = true;
+            System.out.println("\nI haven't noticed this ventilation shaft at the top before.\nJust wondering where it's leading...  I could perhaps try to find an entrance\nand climb inside because it looks out of function anyways.");
+            if (!debugMode()) { Game.wait(1500); }
+        }
     }
 
     /**
