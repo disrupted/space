@@ -10,9 +10,11 @@
  *  This main class creates and initialises all the others: it creates all
  *  rooms, creates the parser and starts the game.  It also evaluates and
  *  executes the commands that the parser returns.
+ *  
+ *  original authors: Michael Kolling & David J. Barnes
  * 
- * @author  Michael Kolling and David J. Barnes
- * @version 2008.03.30
+ * @author  Salomon Popp & Tony Dorfmeister
+ * @version 2017-01-11
  */
 import java.util.HashMap;
 import java.util.Map;
