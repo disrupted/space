@@ -87,7 +87,7 @@ public class GameSystemTest
         //when
         String output = game.processCommand("go north");
         //then
-        assertEquals(true, output.contains("lecture theatre"));
+        assertEquals(true, output.contains("Lavatory"));
     }
 
     @Test
@@ -131,25 +131,83 @@ public class GameSystemTest
         assertEquals(true, output.contains("you haven't collected any items in your inventory"));
     }
 
-//     @Test
-//     public void completeWalkthrough()
-//     {
-//         goAndSee("east",  "lecture theatre");
-//         goAndSee("west",  "main entrance");
-//         goAndSee("west",  "campus pub");
-//         goAndSee("east",  "main entrance");
-//         goAndSee("south", "computing lab");
-//         goAndSee("east",  "admin office");
-//         goAndSee("west",  "computing lab");
-//         goAndSee("north", "main entrance");
-//     }
+    @Test
+    public void completeWalkthrough()
+    {
+        game.setDebugMode(true);
+        game.triggerEvent("vent");
+        goAndSee("north",  "Lavatory");
+        goAndSee("east",  "Medical Facilities");
+        goAndSee("south",  "Lunchroom");
+        goAndSee("west", "Cryosleep");
+        goAndSee("up", "vent");
+        goAndSee("up", "Hallway");
+        goAndSee("east", "Computer Core");
+        goAndSee("south", "locked by a security level 1 hatch");
+        goAndSee("north", "Console I");
+        take("keycardLvl1");
+        go("south");
+        use("keycardLvl1", "keycard unlocks the security hatch");
+        goAndSee("south", "Engine Room");
+        take("backpack");
+        go("north");
+        goAndSee("east", "Elevator: Deck 1");
+        goAndSee("2", "Elevator: Deck 2");
+        goAndSee("west",  "Great Hall");
+        goAndSee("north", "Console II");
+        goAndSee("west", "locked by a security level 1 hatch");
+        use("keycardLvl1", "keycard unlocks the security hatch");
+        goAndSee("west",  "Situation Room");
+        goAndSee("west",  "Cockpit");
+        take("keycardLvl2");
+        go("east");
+        go("east");
+        go("south");
+        go("east");
+        go("1");
+        go("west");
+        go("west");
+        go("down");
+        goAndSee("down", "Cryosleep");
+        use("keycardLvl2", "keycard unlocks the security hatch");
+        goAndSee("south", "Command Center");
+        go("north");
+        go("up");
+        go("up");
+        go("east");
+        go("east");
+        goAndSee("0", "Elevator: Deck 0");
+        goAndSee("-1", "Elevator: Deck -1"); 
+    }
 
     private void goAndSee(String direction, String whatShouldBeContained){
         //when
-        String result = game.processCommand("go "+direction);
+        String result = game.processCommand("go " + direction);
         //then
         if (!result.contains(whatShouldBeContained))
-            fail(result +" does not contain "+whatShouldBeContained);
+            fail(result + " does not contain " + whatShouldBeContained);
+    }
+
+    private void go(String direction)
+    {
+        game.processCommand("go " + direction);
+    }
+
+    private void take(String itemName){
+        //when
+        String result = game.processCommand("take " + itemName);
+        //then
+        String whatShouldBeContained = itemName + " was added to your inventory";
+        if (!result.contains(whatShouldBeContained))
+            fail(result + " does not contain " + whatShouldBeContained);
+    }
+
+    private void use(String itemName, String whatShouldBeContained){
+        //when
+        String result = game.processCommand("use " + itemName);
+        //then
+        if (!result.contains(whatShouldBeContained))
+            fail(result + " does not contain " + whatShouldBeContained);
     }
 
     @Test
