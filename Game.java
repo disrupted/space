@@ -23,9 +23,9 @@ public class Game
     private Room currentRoom;
     private boolean finished;
     private Room start, commandcenter;
-    private Room corridor01, corridor02, corridor03, corridor1_1, corridor1_2, corridor1_3, corridor1_4, corridor2_1, corridor2_2, corridor2_3, corridor2_4, airlock, elevator_airlock, elevator_lvl0, elevator_lvl1, elevator_lvl2, ventilationshaft_0to1;
     private static boolean DEBUG = true;
-    private Item keycardLvl1, keycardLvl2, map, picture, backpack;
+    private Room corridor0_1, corridor0_2, corridor0_3, corridor1_1, corridor1_2, corridor1_3, corridor1_4, corridor2_1, corridor2_2, corridor2_3, corridor2_4, airlock, elevator_airlock, elevator_lvl0, elevator_lvl1, elevator_lvl2, ventilationshaft_0to1;
+    private Item keycardLvl1, keycardLvl2, coin, picture, backpack;
     private HashMap<String,Item> inventory;
     private int inventoryLimit = 1;
     private int securityLvl = 0;
@@ -48,20 +48,20 @@ public class Game
     private void createRooms()
     {
         // create the rooms
-        start = new Room("start","in the Welcome Room", 0);
+        start = new Room("start","Cryosleep Room", 0);
         commandcenter = new Room ("commandcenter","in the Command Center", 2);
-        corridor01 = new Room("corridor01","in a lecture theatre", 0);
-        corridor02 = new Room("corridor02","in the campus pub", 0);
-        corridor03 = new Room("corridor03","in a computing lab", 0);
+        corridor0_1 = new Room("corridor0_1","lavatory", 0);
+        corridor0_2 = new Room("corridor0_2","medical facilities", 0);
+        corridor0_3 = new Room("corridor0_3", "lunchroom", 0);
         ventilationshaft_0to1 = new Room("ventilationshaft_0to1","pretty dark in here..", 0);
-        corridor1_1 = new Room("corridor1_1","in a generic hallway", 0);
-        corridor1_2 = new Room("corridor1_2","in a generic hallway", 0);
-        corridor1_3 = new Room("corridor1_3","in a generic hallway", 0);
-        corridor1_4 = new Room("corridor1_4","in a generic hallway", 1);
-        corridor2_1 = new Room("corridor2_1","in a generic hallway", 0);
-        corridor2_2 = new Room("corridor2_1","in a generic hallway", 0);
-        corridor2_3 = new Room("corridor2_1","in a generic hallway", 1);
-        corridor2_4 = new Room("corridor2_1","in a generic hallway", 0);
+        corridor1_1 = new Room("corridor1_1","Hallway", 0);
+        corridor1_2 = new Room("corridor1_2","Computer Core", 0);
+        corridor1_3 = new Room("corridor1_3","Terminal I", 0);
+        corridor1_4 = new Room("corridor1_4","Engine Room", 1);
+        corridor2_1 = new Room("corridor2_1","Great Hall", 0);
+        corridor2_2 = new Room("corridor2_2","Terminal II", 0);
+        corridor2_3 = new Room("corridor2_3","Situation Room", 1);
+        corridor2_4 = new Room("corridor2_4","Cockpit", 0);
         airlock = new Room("airlock","DANGER !", 0);
         elevator_lvl0 = new Room("elevator_lvl0","Elevator: Deck 0 – Central Area\nLevel 1 Security hatches are locked.", 0);
         elevator_lvl1 = new Room("elevator_lvl1","Elevator: Deck 1 – Engineer's Quarters", 0);
@@ -69,16 +69,16 @@ public class Game
         elevator_airlock = new Room("elevator_airlock","Elevator: Deck -1 – Cargo Bay", 0);
 
         // initialise room exits
-        start.setExits("north", corridor01);
-        start.setExits("east", corridor03);
+        start.setExits("north", corridor0_1);
+        start.setExits("east", corridor0_3);
         start.setExits("south", commandcenter);
         commandcenter.setExits("north", start);
-        corridor01.setExits("east", corridor02);
-        corridor01.setExits("south", start);
-        corridor02.setExits("west", corridor01);
-        corridor02.setExits("south", corridor03);
-        corridor03.setExits("north", corridor02);
-        corridor03.setExits("west", start);
+        corridor0_1.setExits("east", corridor0_2);
+        corridor0_1.setExits("south", start);
+        corridor0_2.setExits("west", corridor0_1);
+        corridor0_2.setExits("south", corridor0_3);
+        corridor0_3.setExits("north", corridor0_2);
+        corridor0_3.setExits("west", start);
         corridor1_2.setExits("east", elevator_lvl1);
         corridor1_2.setExits("north", corridor1_3);
         corridor1_2.setExits("south", corridor1_4);
@@ -116,15 +116,15 @@ public class Game
         picture = new Item("picture", "looks like it was taken with an instant camera", "\n________________1¶¶¶¶¶¶¶¶¶¶¶1________________\n _____________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶1____________\n __________¶¶¶¶118¶¶8¶¶¶¶¶¶¶¶¶¶¶¶¶¶___________\n _______8¶¶¶¶888¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶8________\n ______¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶______\n ____8¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶____\n ___¶¶¶¶¶¶¶¶¶¶¶8¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶8¶¶¶___\n __8¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶8¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶8¶¶¶¶__\n __¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶88881__¶¶¶¶¶¶¶__\n _¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶81___________¶¶¶¶¶¶__\n 1¶¶¶¶¶111____________________________8¶¶¶¶¶¶_\n ¶¶¶¶¶1___________________________1___1¶¶¶¶¶¶_\n ¶¶¶¶¶8111___________________________11¶¶¶¶¶¶_\n 1¶¶¶¶88111__________________________111¶¶¶¶¶_\n _¶¶¶¶1881________________________11111_¶¶¶¶¶_\n _¶¶¶¶18811_____________________¶¶¶¶¶¶8_1¶¶¶¶1\n _¶¶¶¶118¶¶¶¶81______________8¶¶¶¶¶¶¶¶¶_1¶¶¶8¶\n _8¶¶881¶¶¶¶¶¶¶¶¶1_________1¶¶¶¶811__1¶811¶¶1¶\n ¶¶¶¶118¶1__18¶¶¶¶¶8118818¶¶¶88¶111¶888¶11¶¶18\n ¶8¶¶11¶¶11¶¶111¶¶¶¶¶1___1¶¶¶¶1_1¶__¶¶8888¶¶8_\n _1¶¶11¶¶¶¶¶_8¶8_8¶8¶¶____8188__¶¶__¶1__18881_\n __8¶88111¶¶_8¶8__1__11___1___111_181___18811_\n __11881___181111____11_________________1881__\n __118¶81_____________8_________________1881__\n ___18¶¶1__________1111_____1_11______1_188___\n ___88¶¶8________88____________8¶81____188____\n ______1¶1_____8¶888_11____18¶¶118¶8888888____\n _______¶¶8881¶¶818¶¶¶¶¶8_1¶¶¶8118¶¶¶¶8888____\n _______¶¶¶¶¶¶¶¶881188¶¶¶¶¶¶818¶¶¶¶¶__1888____\n _______¶888¶18¶¶¶¶¶8888¶¶¶8¶¶¶¶8_11__88¶_____\n ______1¶¶8181_118¶¶¶¶¶¶¶¶¶¶¶¶8111___8¶¶______\n ¶¶¶¶¶¶¶¶¶¶88¶8_1_18¶¶¶¶¶¶¶8881_____1¶8_______\n 88888¶¶¶¶¶¶¶¶¶8_11118881111_______8¶¶________\n 88118¶__¶¶8¶8888_1_____________18¶¶_¶¶_______\n 88888¶___¶¶8818¶¶11_1_______11¶¶¶8__¶¶¶______\n ¶81¶¶¶____1¶¶¶88¶¶¶88888188¶¶¶¶81__¶¶¶¶¶_____\n 88¶¶¶8______¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶811__1¶¶¶¶¶¶1____\n 8¶¶8_________11_1¶¶¶¶¶¶¶888811__¶¶¶¶8¶¶¶¶1___\n ¶¶8_______¶¶¶¶¶_____11118881__1¶¶¶¶¶¶¶¶¶¶¶___\n ¶1_______¶¶¶¶¶¶______________¶¶¶¶¶¶¶¶¶8¶¶¶8__\n ¶_______¶¶¶¶¶¶¶____________1¶¶¶¶¶¶¶8¶¶¶88¶¶8_\n _______1¶¶¶¶8_____________¶¶¶¶¶8¶¶¶888888¶¶¶8\n _______¶¶¶¶_____________1¶¶¶¶¶88¶¶¶¶¶88¶¶¶88¶\n ______¶¶¶¶¶____________¶¶¶¶8888¶8¶88881¶8¶888\n _____¶¶¶¶¶8__________8¶¶88¶18818¶88118¶88888¶\n");
         keycardLvl1 = new Item("keycardLvl1", "you can unlock security level 1 hatches with it", null);
         keycardLvl2 = new Item("keycardLvl2", "you can unlock security level 2 hatches with it", null);
-        map = new Item("map", "you can look at it", null);
+        coin = new Item("coin", "no idea which currency that is", null);
         backpack = new Item("backpack", "this bag can hold up to 10 items", "increased inventory limit");
     }
 
     private void placeItems()
     {
-        corridor02.placeItem("keycardLvl1", keycardLvl1);
-        start.placeItem("map", map);
-        corridor01.placeItem("picture", picture);
+        corridor1_3.placeItem("keycardLvl1", keycardLvl1);
+        start.placeItem("coin", coin);
+        corridor0_1.placeItem("picture", picture);
         corridor2_4.placeItem("keycardLvl2", keycardLvl2);
         corridor1_4.placeItem("backpack", backpack);
     }
@@ -143,7 +143,7 @@ public class Game
         boolean ventOpen = false;
         while (! finished) {
             if (!ventOpen) {
-                if ((corridor01.getVisits() > 0) && (corridor02.getVisits() > 0) && (corridor03.getVisits() > 0)) 
+                if ((corridor0_1.getVisits() > 0) && (corridor0_2.getVisits() > 0) && (corridor0_3.getVisits() > 0)) 
                 {                    
                     corridor1_1.setExits("east", corridor1_2);
                     corridor1_2.setExits("west", corridor1_1);
@@ -152,11 +152,11 @@ public class Game
                     ventilationshaft_0to1.setExits("up", corridor1_1);
                     start.setExits("up", ventilationshaft_0to1);
                     ventOpen = true;
-                    System.out.println("\nHave you noticed the broken ventilation shaft in the other room?");
+                    System.out.println("\nI haven't noticed this ventilation shaft at the top before.\nJust wondering where it's leading...  I could perhaps try to find an entrance\nand climb inside because it looks out of function anyways.");
                     Game.wait(1500);
                 }
             }
-            if (currentRoom.getName().contains("corridor0") && (corridor01.getVisits() > 1) == (corridor02.getVisits() > 1) == (corridor03.getVisits() > 1))
+            if (currentRoom.getName().contains("corridor0") && (corridor0_1.getVisits() > 1) == (corridor0_2.getVisits() > 1) == (corridor0_3.getVisits() > 1))
             {
                 System.out.println("\nthink I might be going in circles...");
             }
