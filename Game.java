@@ -28,8 +28,7 @@ public class Game
     private Room corridor0_1, corridor0_2, corridor0_3, corridor1_1, corridor1_2, corridor1_3, corridor1_4, corridor2_1, corridor2_2, corridor2_3, corridor2_4, airlock, elevator_airlock, elevator_lvl0, elevator_lvl1, elevator_lvl2, ventilationshaft_0to1;
     private static boolean DEBUG = false;
     private Item keycardLvl1, keycardLvl2, coin, picture, backpack;
-    private HashMap<String,Item> inventory;
-    private int inventoryLimit = 1;
+    private Inventory inventory;
     private int securityLvl = 0;
     private boolean ventOpen = false;
 
@@ -40,9 +39,9 @@ public class Game
     {
         createRooms();
         createItems();
-        inventory = new HashMap<>();
         placeItems();
         parser = new Parser();
+        inventory = new Inventory();
     }
 
     /**
@@ -129,7 +128,7 @@ public class Game
         start.placeItem("coin", coin);
         corridor0_1.placeItem("picture", picture);
         corridor2_4.placeItem("keycardLvl2", keycardLvl2);
-        corridor1_4.placeItem("backpack", backpack);
+        start.placeItem("backpack", backpack);
     }
 
     /**
@@ -289,13 +288,13 @@ public class Game
         Item item = currentRoom.getItem(itemName);
         if (item != null) 
         {
-            if (inventory.size() < inventoryLimit || itemName.equals("backpack")) {
+            if (inventory.getSize() < inventory.getLimit() || itemName.equals("backpack")) {
                 result = itemName + " was added to your inventory - " + item.getDescription();
                 if (item.getEvent() != null) { result += "\n--> " + item.getEvent(); }
                 currentRoom.removeItem(itemName);
-                inventory.put(itemName,item);
-                if (itemName.equals("backpack")) { inventoryLimit = 10; };
-                if (debugMode()) { result += "\n\n### DEBUG MESSAGE ###\ninventory size: " + inventory.size() + " / " + inventoryLimit + "\nitems remaining in room: " + currentRoom.showItems() + "\n---------------------"; }
+                inventory.addItem(itemName,item);
+                if (itemName.equals("backpack")) { inventory.setLimit(10); };
+                if (debugMode()) { result += "\n\n### DEBUG MESSAGE ###\ninventory size: " + inventory.getSize() + " / " + inventory.getLimit() + "\nitems remaining in room: " + currentRoom.showItems() + "\n---------------------"; }
             } else {
                 result += "I'll need some sort of bag to carry more than 1 item";
             }
@@ -314,14 +313,8 @@ public class Game
 
     private String showInventory(Command command)
     {
-        String inventoryList = "";
-        for(Map.Entry<String, Item> entry : inventory.entrySet()) {
-            String name = entry.getKey();
-            Item item = entry.getValue();
-            inventoryList += "\n " + item.getFullDescription();
-        }
-        if (inventoryList == "") { return "you haven't collected any items in your inventory"; }
-        return "your inventory contains " + inventory.size() + "/" + inventoryLimit + " items :" + inventoryList;
+        return inventory.getFullDescription();
+        
     }
 
     private String drop(Command command)
@@ -334,35 +327,22 @@ public class Game
         String itemName = command.getSecondWord();
         if (itemName.equals("all"))
         {
-            for(Map.Entry<String, Item> entry : inventory.entrySet()) {
-                String name = entry.getKey();
-                Item item = entry.getValue();
-                currentRoom.placeItem(name, item);
-                result += name + ", ";
-            }
-            inventory.clear();
-            inventoryLimit = 1;
-            if (result == "") { return "I haven't collected any items in the inventory"; }
-            return "inventory dropped: " + result.substring(0, result.length() - 2);
+            //todo: drop all
         }
         else
         {
-            for(Map.Entry<String, Item> entry : inventory.entrySet()) {
-                String name = entry.getKey();
-                if (name.equals(itemName)) {
-                    Item item = entry.getValue();
-                    inventory.remove(itemName);
-                    currentRoom.placeItem(itemName, item);
-                    result = itemName + " was removed from inventory";
-                    if (itemName.equals("backpack")) { inventoryLimit = 1; };
-                    if (debugMode()) { result += "\n\n### DEBUG MESSAGE ###\ninventory size: " + inventory.size() + " / " + inventoryLimit + "\nitems remaining in room: " + currentRoom.showItems() + "\n---------------------"; }
-                }       
-            }
-            if (result == "") {
-                result = "inventory doesn't contain " + itemName; 
-            }
-            return result;
+            //todo: drop backpack decreases inventory limit again and drops all items
+            Item item = inventory.getItem(itemName);
+            inventory.removeItem(itemName);
+            currentRoom.placeItem(itemName, item);
+            result = itemName + " was removed from inventory";
+            if (itemName.equals("backpack")) { inventory.setLimit(1); };
+            if (Game.debugMode()) { result += "\n\n### DEBUG MESSAGE ###\ninventory size: " + inventory.getSize() + " / " + inventory.getLimit() + "\nitems remaining in room: " + currentRoom.showItems() + "\n---------------------"; }
+        }       
+        if (result == "") {
+            result = "inventory doesn't contain " + itemName; 
         }
+        return result;
     }
 
     private String use(Command command)
@@ -373,10 +353,10 @@ public class Game
         }
         String result = "";
         String itemName = command.getSecondWord();
-        boolean itemInInventory = false;
-        for(Map.Entry<String, Item> entry : inventory.entrySet()) {
-            String name = entry.getKey();
-            Item item = entry.getValue();
+
+        Item item = inventory.getItem(itemName);
+        if (item != null) {
+            String name = item.getName();
             if (name.equals(itemName))
             {
                 if (name.contains("keycardLvl"))

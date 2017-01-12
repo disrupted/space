@@ -11,6 +11,7 @@ public class Inventory
 {
     private String name, description, event;
     private HashMap<String,Item> inventory;
+    private int limit = 1;
 
     /**
      * Constructor for objects of class Inventory
@@ -18,9 +19,6 @@ public class Inventory
     public Inventory()
     {
         inventory = new HashMap<>();
-        this.description = description;
-        this.name = name;
-        this.event = event;
     }
 
     /**
@@ -41,33 +39,51 @@ public class Inventory
 
     public int getSize()
     {
-        return this.size();
+        return inventory.size();
     }
-    
+
     public void addItem(String itemName, Item item)
     {
-        this.put(itemName,item);
+        inventory.put(itemName,item);
     }
-    
+
+    public void removeItem(String itemName)
+    {
+        inventory.remove(itemName);
+    }
+
     public Item getItem(String itemName)
     {
-        for(Map.Entry<String, Item> entry : this.entrySet()) {
+        String inventoryList = "";
+        for(Map.Entry<String, Item> entry : inventory.entrySet()) {
             String name = entry.getKey();
-            Item item = entry.getValue();
-            inventoryList += "\n " + item.getFullDescription();
+            if (name.equals(itemName)) { 
+                Item item = entry.getValue();
+                return item;
+            }
         }
+        return null;
     }
-    
-    public String getEvent()
+
+    public int getLimit()
     {
-        return event;
+        return limit;
+    }
+
+    public void setLimit(int newLimit)
+    {
+        limit = newLimit;      
     }
 
     public String getFullDescription()
     {
-        String output = "";
-        output += name;
-        output += " - " + description;
-        return output;
+        String inventoryList = "";
+        for(Map.Entry<String, Item> entry : inventory.entrySet()) {
+            String name = entry.getKey();
+            Item item = entry.getValue();
+            inventoryList += "\n " + item.getFullDescription();
+        }
+        if (inventoryList == "") { return "you haven't collected any items in your inventory"; }
+        return "your inventory contains " + getSize() + "/" + getLimit() + " items :" + inventoryList;
     }
 }
