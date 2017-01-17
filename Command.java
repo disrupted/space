@@ -21,6 +21,8 @@ public class Command
 {
     private CommandWord commandWord;
     private String secondWord;
+    private static Room currentRoom;
+    private static Inventory inventory;
 
     /**
      * Create a command object. First and second word must be supplied, but
@@ -33,6 +35,7 @@ public class Command
     {
         commandWord = CommandWord.getForWord(firstWord);
         this.secondWord = secondWord;
+        inventory = Game.getInventory();
     }
 
     /**
@@ -68,6 +71,217 @@ public class Command
     public boolean hasSecondWord()
     {
         return (secondWord != null);
+    }
+
+    /**
+     * Given a command, process (that is: execute) the command.
+     * @param command The command to be processed.
+     * @return true If the command ends the game, false otherwise.
+     */
+    public static String processCommand(Command command) 
+    {
+        boolean wantToQuit = false;
+
+        CommandWord commandWord = command.getCommandWord();
+        switch (commandWord) {
+            case HELP: return "use these command words:\n   " + printHelp();
+            case GO: return goRoom(command);
+            case QUIT: return quit(command);
+            case TAKE: return take(command);
+            case LOOK: return look(command);
+            case INVENTORY: return showInventory(command);
+            case USE: return use(command);
+            case DROP: return drop(command);
+            case UNKNOWN: return "I don't know what you mean.\nuse these command words to give me advice..\n   " + printHelp();
+        }
+
+        return null;
+    }
+
+    /**
+     * Print out some help information.
+     * Here we print some stupid, cryptic message and a list of the 
+     * command words.
+     */
+    public static String printHelp() 
+    {   
+        return CommandWord.getCommandWords();
+    }
+
+    /**
+     * Print out the opening message for the player.
+     */
+    public static void printWelcome()
+    {
+        System.out.println("\nWelcome to <Game title>!");
+        System.out.println("Hey you, I am so glad that I found this communicator here to talk to someone.\nI really hope you can help me out because I just woke up in this strange room\nand I have no idea what's going on here but this environment looks kinda spacey.");
+        System.out.println("\nCan you give me some tips what to do by using these commands? \n " + printHelp());
+        System.out.println("\n" + currentRoom.getFullDescription());
+    }
+
+    /** 
+     * Try to go to one direction. If there is an exit, enter
+     * the new room, otherwise print an error message.
+     */
+    public static String goRoom(Command command) 
+    {
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know where to go...
+            return "Go where?";
+        }
+
+        String direction = command.getSecondWord();
+
+        String result = "";
+        if (currentRoom.getNextRoom(direction).getSecurityLvl() > 0) {
+            result += "This exit seems to be locked by a security level " + currentRoom.getNextRoom(direction).getSecurityLvl() + " hatch";
+            return result;
+        }
+        else
+        {
+            if (currentRoom == currentRoom.getNextRoom(direction)){
+                result += "There is no door";
+                return result;
+            }
+            else {
+                currentRoom.getTransDescription(direction);
+                currentRoom = currentRoom.getNextRoom(direction);
+                if (currentRoom.getName() == "airlock") { 
+                    Game.gameOver();
+                    return null;
+                }
+                else {
+                    currentRoom.addVisit();
+                    return currentRoom.getFullDescription();
+                }
+            }
+        }
+    }
+
+    public static String take(Command command)
+    {
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know what to take...
+            return "Take what?";
+        }
+        String result = "";
+        String itemName = command.getSecondWord();
+        Item item = currentRoom.getItem(itemName);
+        if (item != null) 
+        {
+            if (inventory.getSize() < inventory.getLimit() || itemName.equals("backpack")) {
+                result = itemName + " was added to your inventory - " + item.getDescription();
+                if (item.getEvent() != null) { result += "\n--> " + item.getEvent(); }
+                currentRoom.removeItem(itemName);
+                inventory.addItem(itemName,item);
+                if (itemName.equals("backpack")) { inventory.setLimit(10); };
+                if (Game.debugMode()) { result += "\n\n### DEBUG MESSAGE ###\ninventory size: " + inventory.getSize() + " / " + inventory.getLimit() + "\nitems remaining in room: " + currentRoom.showItems() + "\n---------------------"; }
+            } else {
+                result += "I'll need some sort of bag to carry more than 1 item";
+            }
+        }
+        else
+        {
+            result = "there's no such item " + itemName;
+        }  
+        return result;
+    }
+
+    public static String look(Command command)
+    {
+        return currentRoom.getFullDescription();
+    }
+
+    public static String showInventory(Command command)
+    {
+        return inventory.getFullDescription();
+    }
+
+    public static String drop(Command command)
+    {
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know which item to drop...
+            return "Drop what?";
+        }
+        String result = "";
+        String itemName = command.getSecondWord();
+        if (itemName.equals("all"))
+        {
+            //todo: drop all
+        }
+        else
+        {
+            //todo: drop backpack decreases inventory limit again and drops all items
+            Item item = inventory.getItem(itemName);
+            inventory.removeItem(itemName);
+            currentRoom.placeItem(itemName, item);
+            result = itemName + " was removed from inventory";
+            if (itemName.equals("backpack")) { inventory.setLimit(1); };
+            if (Game.debugMode()) { result += "\n\n### DEBUG MESSAGE ###\ninventory size: " + inventory.getSize() + " / " + inventory.getLimit() + "\nitems remaining in room: " + currentRoom.showItems() + "\n---------------------"; }
+        }       
+        if (result == "") {
+            result = "inventory doesn't contain " + itemName; 
+        }
+        return result;
+    }
+
+    public static String use(Command command)
+    {
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know which item to use...
+            return "Use what?";
+        }
+        String result = "";
+        String itemName = command.getSecondWord();
+
+        Item item = inventory.getItem(itemName);
+        if (item != null) {
+            String name = item.getName();
+            if (name.equals(itemName))
+            {
+                if (name.contains("keycardLvl"))
+                {
+                    int securityLvl = Integer.parseInt(name.replace("keycardLvl", ""));
+                    String direction = currentRoom.getExitMatchingSecurityLvl(securityLvl);
+                    if (direction != null) {
+                        currentRoom.getNextRoom(direction).setSecurityLvl(0);
+                        return "yes, that's it! this keycard unlocks the security hatch here.";
+                    }
+                    else {
+                        result += "there's no security level " + securityLvl + " hatch here.";
+                    }
+                }
+                else
+                {
+                    result += "I have no idea what to do with this, maybe I can use it somewhere else...";
+                }
+                return result;
+            }
+        }
+        return itemName + " wasn't found in your inventory"; 
+    }
+
+    /** 
+     * "Quit" was entered. Check the rest of the command to see
+     * whether we really quit the game.
+     * @return null, if this command quits the game, something else to output otherwise.
+     */
+    public static String quit(Command command) 
+    {
+        if(command.hasSecondWord()) {
+            return "Quit what?";
+        }
+        else {
+            return null;  // signal that we want to quit
+        }
+    }
+
+    public static void setCurrentRoom(Room room) {
+        currentRoom = room;
+    }
+
+    public static Room getCurrentRoom() {
+        return currentRoom;
     }
 }
 
