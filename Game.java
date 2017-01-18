@@ -21,6 +21,7 @@ import java.util.Map;
 
 public class Game 
 {
+    public static GameState state = new GameState();
     private Parser parser;
     private boolean finished;
     private Room start, commandcenter;
@@ -108,7 +109,7 @@ public class Game
         elevator_airlock.setExits("2", elevator_lvl2);
         elevator_airlock.setExits("east", airlock);
 
-        Command.setCurrentRoom(start);  // starting point
+        Game.state.currentRoom = start;  // starting point
         start.addVisit();
     }
 
@@ -153,16 +154,16 @@ public class Game
                     triggerEvent("vent");
                 }
             }
-            if (Command.getCurrentRoom().getName().contains("corridor0") && (corridor0_1.getVisits() > 1) == (corridor0_2.getVisits() > 1) == (corridor0_3.getVisits() > 1))
+            if (Game.state.currentRoom.getName().contains("corridor0") && (corridor0_1.getVisits() > 1) == (corridor0_2.getVisits() > 1) == (corridor0_3.getVisits() > 1))
             {
                 System.out.println("\nthink I might be going in circles...");
             }
             Command command = parser.getCommand();
-            String output = Command.processCommand(command);
-            finished = (null == output);
+            state.output = Command.processCommand(command);
+            finished = (null == state.output);
             if (!finished)
             { 
-                System.out.println(output);
+                System.out.println(state.output);
             }
         }
         System.out.println("Thank you for playing.  Good bye.");

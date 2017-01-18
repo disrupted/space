@@ -149,7 +149,6 @@ public class Room
             return currentRoom;
         }
         else {
-            currentRoom = nextRoom;
             return nextRoom;
         }
     }

@@ -21,7 +21,6 @@ public class Command
 {
     private CommandWord commandWord;
     private String secondWord;
-    private static Room currentRoom;
     private static Inventory inventory;
 
     /**
@@ -92,6 +91,7 @@ public class Command
             case INVENTORY: return showInventory(command);
             case USE: return use(command);
             case DROP: return drop(command);
+            case BACK: return back(command);
             case UNKNOWN: return "I don't know what you mean.\nuse these command words to give me advice..\n   " + printHelp();
         }
 
@@ -116,7 +116,7 @@ public class Command
         System.out.println("\nWelcome to <Game title>!");
         System.out.println("Hey you, I am so glad that I found this communicator here to talk to someone.\nI really hope you can help me out because I just woke up in this strange room\nand I have no idea what's going on here but this environment looks kinda spacey.");
         System.out.println("\nCan you give me some tips what to do by using these commands? \n " + printHelp());
-        System.out.println("\n" + currentRoom.getFullDescription());
+        System.out.println("\n" + Game.state.currentRoom.getFullDescription());
     }
 
     /** 
@@ -133,26 +133,28 @@ public class Command
         String direction = command.getSecondWord();
 
         String result = "";
-        if (currentRoom.getNextRoom(direction).getSecurityLvl() > 0) {
-            result += "This exit seems to be locked by a security level " + currentRoom.getNextRoom(direction).getSecurityLvl() + " hatch";
+        Room nextRoom = Game.state.currentRoom.getNextRoom(direction);
+        if (nextRoom.getSecurityLvl() > 0) {
+            result += "This exit seems to be locked by a security level " + Game.state.currentRoom.getNextRoom(direction).getSecurityLvl() + " hatch";
             return result;
         }
         else
         {
-            if (currentRoom == currentRoom.getNextRoom(direction)){
+            if (Game.state.currentRoom == nextRoom){
                 result += "There is no door";
                 return result;
             }
             else {
-                currentRoom.getTransDescription(direction);
-                currentRoom = currentRoom.getNextRoom(direction);
-                if (currentRoom.getName() == "airlock") { 
+                Game.state.currentRoom.getTransDescription(direction);
+                Game.state.lastRoom = Game.state.currentRoom;
+                Game.state.currentRoom = nextRoom;
+                if (Game.state.currentRoom.getName() == "airlock") { 
                     Game.gameOver();
                     return null;
                 }
                 else {
-                    currentRoom.addVisit();
-                    return currentRoom.getFullDescription();
+                    Game.state.currentRoom.addVisit();
+                    return Game.state.currentRoom.getFullDescription();
                 }
             }
         }
@@ -166,16 +168,16 @@ public class Command
         }
         String result = "";
         String itemName = command.getSecondWord();
-        Item item = currentRoom.getItem(itemName);
+        Item item = Game.state.currentRoom.getItem(itemName);
         if (item != null) 
         {
             if (inventory.getSize() < inventory.getLimit() || itemName.equals("backpack")) {
                 result = itemName + " was added to your inventory - " + item.getDescription();
                 if (item.getEvent() != null) { result += "\n--> " + item.getEvent(); }
-                currentRoom.removeItem(itemName);
+                Game.state.currentRoom.removeItem(itemName);
                 inventory.addItem(itemName,item);
                 if (itemName.equals("backpack")) { inventory.setLimit(10); };
-                if (Game.debugMode()) { result += "\n\n### DEBUG MESSAGE ###\ninventory size: " + inventory.getSize() + " / " + inventory.getLimit() + "\nitems remaining in room: " + currentRoom.showItems() + "\n---------------------"; }
+                if (Game.debugMode()) { result += "\n\n### DEBUG MESSAGE ###\ninventory size: " + inventory.getSize() + " / " + inventory.getLimit() + "\nitems remaining in room: " + Game.state.currentRoom.showItems() + "\n---------------------"; }
             } else {
                 result += "I'll need some sort of bag to carry more than 1 item";
             }
@@ -189,7 +191,7 @@ public class Command
 
     public static String look(Command command)
     {
-        return currentRoom.getFullDescription();
+        return Game.state.currentRoom.getFullDescription();
     }
 
     public static String showInventory(Command command)
@@ -214,10 +216,10 @@ public class Command
             //todo: drop backpack decreases inventory limit again and drops all items
             Item item = inventory.getItem(itemName);
             inventory.removeItem(itemName);
-            currentRoom.placeItem(itemName, item);
+            Game.state.currentRoom.placeItem(itemName, item);
             result = itemName + " was removed from inventory";
             if (itemName.equals("backpack")) { inventory.setLimit(1); };
-            if (Game.debugMode()) { result += "\n\n### DEBUG MESSAGE ###\ninventory size: " + inventory.getSize() + " / " + inventory.getLimit() + "\nitems remaining in room: " + currentRoom.showItems() + "\n---------------------"; }
+            if (Game.debugMode()) { result += "\n\n### DEBUG MESSAGE ###\ninventory size: " + inventory.getSize() + " / " + inventory.getLimit() + "\nitems remaining in room: " + Game.state.currentRoom.showItems() + "\n---------------------"; }
         }       
         if (result == "") {
             result = "inventory doesn't contain " + itemName; 
@@ -242,9 +244,9 @@ public class Command
                 if (name.contains("keycardLvl"))
                 {
                     int securityLvl = Integer.parseInt(name.replace("keycardLvl", ""));
-                    String direction = currentRoom.getExitMatchingSecurityLvl(securityLvl);
+                    String direction = Game.state.currentRoom.getExitMatchingSecurityLvl(securityLvl);
                     if (direction != null) {
-                        currentRoom.getNextRoom(direction).setSecurityLvl(0);
+                        Game.state.currentRoom.getNextRoom(direction).setSecurityLvl(0);
                         return "yes, that's it! this keycard unlocks the security hatch here.";
                     }
                     else {
@@ -261,6 +263,21 @@ public class Command
         return itemName + " wasn't found in your inventory"; 
     }
 
+    public static String back(Command command)
+    {
+        String result = "";
+        if (Game.state.lastRoom != null) {
+            result += "Going back to ";
+            if (Game.debugMode()) { result += Game.state.lastRoom.getName() + ": "; }
+            result += Game.state.lastRoom.getDescription() + ".";
+            Game.state.currentRoom = Game.state.lastRoom;
+            Game.state.lastRoom = null;
+        } else {
+            result += "I don't remember where I was before...";
+        }
+        return result;
+    }
+
     /** 
      * "Quit" was entered. Check the rest of the command to see
      * whether we really quit the game.
@@ -274,14 +291,6 @@ public class Command
         else {
             return null;  // signal that we want to quit
         }
-    }
-
-    public static void setCurrentRoom(Room room) {
-        currentRoom = room;
-    }
-
-    public static Room getCurrentRoom() {
-        return currentRoom;
     }
 }
 
