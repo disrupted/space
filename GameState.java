@@ -7,7 +7,7 @@
  */
 public class GameState
 {
-    protected Room currentRoom;
-    protected Room lastRoom;
-    protected String output;
+    Room currentRoom;
+    Room lastRoom;
+    String output;
 }
