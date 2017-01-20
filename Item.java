@@ -4,20 +4,21 @@
  * @author Salomon Popp
  * @version 2016.01.08
  */
-import java.util.HashMap;
 
 public class Item
 {
     private String name, description, event;
+    private int weight;
     
     /**
      * Constructor for objects of class Item
      */
-    public Item(String name, String description, String event)
+    public Item(String name, String description, String event, int weight)
     {
         this.description = description;
         this.name = name;
         this.event = event;
+        this.weight = weight;
     }
 
     /**
@@ -41,10 +42,15 @@ public class Item
         return event;
     }
     
+    public int getWeight(){
+        return weight;
+    }
+    
     public String getFullDescription()
     {
         String output = "";
         output += name;
+        output += " - Weight in gramm is: " + weight;
         output += " - " + description;
         return output;
     }

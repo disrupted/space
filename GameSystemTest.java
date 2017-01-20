@@ -218,4 +218,18 @@ public class GameSystemTest
         assertTrue(result.contains("south"));
         assertTrue(result.contains("east"));
     }
+   
+    @Test
+    public void testBack(){
+        game.processCommand("go east");
+        String result = game.processCommand("back");
+        assertTrue(result.contains("Cryosleep"));
+    }
+    
+    @Test
+    public void testDoubleBack(){
+        game.processCommand("go east");
+        String result = game.processCommand("back back");
+        assertTrue(result.contains("Cryosleep"));
+    }
 }
