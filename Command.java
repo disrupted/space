@@ -213,7 +213,7 @@ public class Command
         }
         else
         {
-            //todo: drop backpack decreases inventory limit again and drops all items
+            //todo: drop backpack (decreases inventory limit again and) drops all items
             Item item = inventory.getItem(itemName);
             inventory.removeItem(itemName);
             Game.state.currentRoom.placeItem(itemName, item);

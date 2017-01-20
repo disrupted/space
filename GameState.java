@@ -1,6 +1,6 @@
 
 /**
- * Abstract class GameState - used to store Game status information
+ * GameState - used to store Game status information
  * 
  * @author Salomon Popp & Tony Dorfmeister
  * @version 2017-01-18
