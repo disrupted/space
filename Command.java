@@ -146,7 +146,7 @@ public class Command
             }
             else {
                 Game.state.currentRoom.getTransDescription(direction);
-                Game.state.lastRoom = Game.state.currentRoom;
+                Game.state.lastRooms.push(Game.state.currentRoom);
                 Game.state.currentRoom = nextRoom;
                 if (Game.state.currentRoom.getName() == "airlock") { 
                     Game.gameOver();
@@ -266,12 +266,11 @@ public class Command
     public static String back(Command command)
     {
         String result = "";
-        if (Game.state.lastRoom != null) {
+        if (!Game.state.lastRooms.isEmpty()) {
             result += "Going back to ";
-            if (Game.debugMode()) { result += Game.state.lastRoom.getName() + ": "; }
-            result += Game.state.lastRoom.getDescription() + ".";
-            Game.state.currentRoom = Game.state.lastRoom;
-            Game.state.lastRoom = null;
+            if (Game.debugMode()) { result += Game.state.lastRooms.peek().getName() + ": "; }
+            result += Game.state.lastRooms.peek().getDescription() + ".";
+            Game.state.currentRoom = Game.state.lastRooms.pop();
         } else {
             result += "I don't remember where I was before...";
         }
