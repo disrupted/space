@@ -48,10 +48,7 @@ public class Item
     
     public String getFullDescription()
     {
-        String output = "";
-        output += name;
-        output += " - Weight in gramm is: " + weight;
-        output += " - " + description;
+        String output = name + " (" + weight + "g) - " + description;
         return output;
     }
 }
