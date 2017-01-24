@@ -1,5 +1,4 @@
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.Stack;
 
 /**
  * GameState - used to store Game status information
@@ -11,6 +10,6 @@ import java.util.Deque;
 public class GameState
 {
     Room currentRoom;
-    Deque<Room> lastRooms = new ArrayDeque<Room>();
+    Stack<Room> lastRooms = new Stack<Room>();
     String output;
 }

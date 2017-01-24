@@ -42,7 +42,7 @@ public class Game
         placeItems();
         parser = new Parser();
         inventory = new Inventory();
-        
+        state.lastRooms.clear();
     }
 
     /**
