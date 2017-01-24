@@ -235,14 +235,14 @@ public class GameSystemTest
         assertTrue(result.contains("Cryosleep"));
     }
     
-//     @Test
-//     public void testTripleBack(){
-//         game.processCommand("go east");
-//         game.processCommand("go north");
-//         game.processCommand("back");
-//         game.processCommand("back");
-//         String result = game.processCommand("back");
-//         System.out.println(result);
-//         assertTrue(result.contains("remember"));
-//     }
+    @Test
+    public void testTripleBack(){
+        game.processCommand("go east");
+        game.processCommand("go north");
+        game.processCommand("back");
+        game.processCommand("back");
+        String result = game.processCommand("back");
+        System.out.println(result);
+        assertTrue(result.contains("remember"));
+    }
 }
