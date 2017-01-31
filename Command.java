@@ -205,20 +205,23 @@ public class Command
         }
         String result = "";
         String itemName = command.getSecondWord();
-        if (itemName.equals("all"))
-        {
-            //todo: drop all
+        Item item = inventory.getItem(itemName);
+        if (item != null || itemName.equals("all")) {
+            if (itemName.equals("all") || itemName.equals("backpack"))
+            {
+                inventory.reset(); // drop whole inventory
+                result += "inventory was cleared.";
+            }
+            else
+            {
+                inventory.removeItem(itemName);
+                Game.state.currentRoom.placeItem(itemName, item);
+                result = itemName + " was removed from inventory";
+                if (itemName.equals("backpack")) { inventory.setWeightLimit(100); };
+                if (Game.debugMode()) { result += "\n\n### DEBUG MESSAGE ###\ninventory size: " + inventory.getSize() + " / " + inventory.getWeightLimit() + "\nitems remaining in room: " + Game.state.currentRoom.showItems() + "\n---------------------"; }
+            }
         }
-        else
-        {
-            //todo: drop backpack (decreases inventory limit again and) drops all items
-            Item item = inventory.getItem(itemName);
-            inventory.removeItem(itemName);
-            Game.state.currentRoom.placeItem(itemName, item);
-            result = itemName + " was removed from inventory";
-            if (itemName.equals("backpack")) { inventory.setWeightLimit(1); };
-            if (Game.debugMode()) { result += "\n\n### DEBUG MESSAGE ###\ninventory size: " + inventory.getSize() + " / " + inventory.getWeightLimit() + "\nitems remaining in room: " + Game.state.currentRoom.showItems() + "\n---------------------"; }
-        }       
+
         if (result == "") {
             result = "inventory doesn't contain " + itemName; 
         }

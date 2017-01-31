@@ -53,6 +53,17 @@ public class Inventory
         inventory.remove(itemName);
     }
 
+    public void reset()
+    {
+        for (Map.Entry<String, Item> entry : inventory.entrySet()) {
+            String name = entry.getKey(); 
+            Item item = entry.getValue();
+            Game.state.currentRoom.placeItem(name, item);
+        }
+        inventory.clear();
+        weightLimit = 100;
+    }
+
     public Item getItem(String itemName)
     {
         String inventoryList = "";
