@@ -177,13 +177,12 @@ public class Room
         for(Map.Entry<String, Item> entry : itemMap.entrySet()) {
             String name = entry.getKey();
             Item item = entry.getValue();
-            itemDescription += "\n " + item.getFullDescription();
+            if (item != null) { itemDescription += "\n " + item.getFullDescription(); }
         }
         if (itemDescription != "") {
             return itemDescription;
-        } else {
-            return null;
         }
+        return null;
     }
 
     public Integer getSecurityLvl()
