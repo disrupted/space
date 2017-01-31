@@ -7,6 +7,7 @@
  */
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Iterator;
 public class Inventory
 {
     private String name, description, event;
@@ -80,9 +81,9 @@ public class Inventory
     public int getCurrentWeight()
     {
         int weightSum = 0;
-        for(Map.Entry<String, Item> entry : inventory.entrySet()) {
-            Item item = entry.getValue();
-            weightSum += item.getWeight();
+        Iterator <Item> it = inventory.values().iterator();
+        while (it.hasNext()) {
+            weightSum += it.next().getWeight();
         }
         return weightSum;
     }

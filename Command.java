@@ -169,6 +169,7 @@ public class Command
         Item item = Game.state.currentRoom.getItem(itemName);
         if (item != null) 
         {
+            // check current inventory weight
             if (inventory.getCurrentWeight() + item.getWeight() <= inventory.getWeightLimit() || itemName.equals("backpack")) {
                 result = itemName + " was added to your inventory - " + item.getDescription();
                 if (item.getEvent() != null) { result += "\n--> " + item.getEvent(); }
