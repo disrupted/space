@@ -134,28 +134,26 @@ public class Command
 
         String result = "";
         Room nextRoom = Game.state.currentRoom.getNextRoom(direction);
+        if (nextRoom == null){
+            result += "There is no door";
+            return result;
+        }
         if (nextRoom.getSecurityLvl() > 0) {
             result += "This exit seems to be locked by a security level " + Game.state.currentRoom.getNextRoom(direction).getSecurityLvl() + " hatch";
             return result;
         }
         else
         {
-            if (Game.state.currentRoom == nextRoom){
-                result += "There is no door";
-                return result;
+            Game.state.currentRoom.getTransDescription(direction);
+            Game.state.lastRooms.push(Game.state.currentRoom);
+            Game.state.currentRoom = nextRoom;
+            if (Game.state.currentRoom.getName() == "airlock") { 
+                Game.gameOver();
+                return null;
             }
             else {
-                Game.state.currentRoom.getTransDescription(direction);
-                Game.state.lastRooms.push(Game.state.currentRoom);
-                Game.state.currentRoom = nextRoom;
-                if (Game.state.currentRoom.getName() == "airlock") { 
-                    Game.gameOver();
-                    return null;
-                }
-                else {
-                    Game.state.currentRoom.addVisit();
-                    return Game.state.currentRoom.getFullDescription();
-                }
+                Game.state.currentRoom.addVisit();
+                return Game.state.currentRoom.getFullDescription();
             }
         }
     }

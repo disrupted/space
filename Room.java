@@ -142,15 +142,7 @@ public class Room
 
     public Room getNextRoom(String direction)
     {
-        Room nextRoom = null;
-        Room currentRoom = this;
-        nextRoom = exits.get(direction);
-        if (nextRoom == null) {
-            return currentRoom;
-        }
-        else {
-            return nextRoom;
-        }
+        return exits.get(direction);
     }
 
     public String getName() 
