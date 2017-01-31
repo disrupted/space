@@ -11,7 +11,7 @@ public class Inventory
 {
     private String name, description, event;
     private HashMap<String,Item> inventory;
-    private int limit = 1;
+    private int weightLimit;
 
     /**
      * Constructor for objects of class Inventory
@@ -19,6 +19,7 @@ public class Inventory
     public Inventory()
     {
         inventory = new HashMap<>();
+        weightLimit = 100;
     }
 
     /**
@@ -65,14 +66,24 @@ public class Inventory
         return null;
     }
 
-    public int getLimit()
+    public int getCurrentWeight()
     {
-        return limit;
+        int weightSum = 0;
+        for(Map.Entry<String, Item> entry : inventory.entrySet()) {
+            Item item = entry.getValue();
+            weightSum += item.getWeight();
+        }
+        return weightSum;
     }
 
-    public void setLimit(int newLimit)
+    public int getWeightLimit()
     {
-        limit = newLimit;      
+        return weightLimit;
+    }
+
+    public void setWeightLimit(int newWeightLimit)
+    {
+        weightLimit = newWeightLimit;      
     }
 
     public String getFullDescription()
@@ -84,6 +95,6 @@ public class Inventory
             inventoryList += "\n " + item.getFullDescription();
         }
         if (inventoryList == "") { return "you haven't collected any items in your inventory"; }
-        return "your inventory contains " + getSize() + "/" + getLimit() + " items :" + inventoryList;
+        return "your inventory contains " + getSize() + " item(s) – " + getCurrentWeight() + "/" + getWeightLimit() + "g:" + inventoryList;
     }
 }

@@ -169,15 +169,15 @@ public class Command
         Item item = Game.state.currentRoom.getItem(itemName);
         if (item != null) 
         {
-            if (inventory.getSize() < inventory.getLimit() || itemName.equals("backpack")) {
+            if (inventory.getCurrentWeight() + item.getWeight() <= inventory.getWeightLimit() || itemName.equals("backpack")) {
                 result = itemName + " was added to your inventory - " + item.getDescription();
                 if (item.getEvent() != null) { result += "\n--> " + item.getEvent(); }
                 Game.state.currentRoom.removeItem(itemName);
                 inventory.addItem(itemName,item);
-                if (itemName.equals("backpack")) { inventory.setLimit(10); };
-                if (Game.debugMode()) { result += "\n\n### DEBUG MESSAGE ###\ninventory size: " + inventory.getSize() + " / " + inventory.getLimit() + "\nitems remaining in room: " + Game.state.currentRoom.showItems() + "\n---------------------"; }
+                if (itemName.equals("backpack")) { inventory.setWeightLimit(5000); };
+                if (Game.debugMode()) { result += "\n\n### DEBUG MESSAGE ###\ninventory size: " + inventory.getSize() + " / " + inventory.getWeightLimit() + "\nitems remaining in room: " + Game.state.currentRoom.showItems() + "\n---------------------"; }
             } else {
-                result += "I'll need some sort of bag to carry more than 1 item";
+                result += "This item is too heavy. I can't carry it right now.";
             }
         }
         else
@@ -216,8 +216,8 @@ public class Command
             inventory.removeItem(itemName);
             Game.state.currentRoom.placeItem(itemName, item);
             result = itemName + " was removed from inventory";
-            if (itemName.equals("backpack")) { inventory.setLimit(1); };
-            if (Game.debugMode()) { result += "\n\n### DEBUG MESSAGE ###\ninventory size: " + inventory.getSize() + " / " + inventory.getLimit() + "\nitems remaining in room: " + Game.state.currentRoom.showItems() + "\n---------------------"; }
+            if (itemName.equals("backpack")) { inventory.setWeightLimit(1); };
+            if (Game.debugMode()) { result += "\n\n### DEBUG MESSAGE ###\ninventory size: " + inventory.getSize() + " / " + inventory.getWeightLimit() + "\nitems remaining in room: " + Game.state.currentRoom.showItems() + "\n---------------------"; }
         }       
         if (result == "") {
             result = "inventory doesn't contain " + itemName; 

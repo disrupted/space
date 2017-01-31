@@ -18,7 +18,7 @@ public class Item
         this.description = description;
         this.name = name;
         this.event = event;
-        this.weight = weight;
+        this.weight = weight; // in Gramms
     }
 
     /**
