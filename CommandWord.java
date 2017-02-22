@@ -24,7 +24,7 @@ public enum CommandWord {
     
     BACK("back"),
 
-    QUIT("quit"), 
+    QUIT("quit"),
 
     HELP("help"), 
 
@@ -38,23 +38,18 @@ public enum CommandWord {
         this.word = word;
     }
 
-    // a constant array that holds all valid command words
-    private static final String[] validCommands = {
-            "go", "look", "use", "take", "inventory", "drop", "back", "quit", "help", "unknown"
-        };
-
     public static String getCommandWords()
     {
         String output = "";
-        for (String command : validCommands)
+        for (CommandWord command : CommandWord.values())
         {
-            if (command != "unknown")
+            if (command != UNKNOWN) // don't include UNKNOWN in list of valid user commands
             {
                 output += command + " ";
             }
         }
         output = output.substring(0, output.length() - 1);
-        return output;
+        return output.toLowerCase();
     }
 
     public String getWord() {
